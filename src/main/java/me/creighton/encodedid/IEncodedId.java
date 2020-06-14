@@ -31,7 +31,7 @@ public interface IEncodedId {
   String BASE_DEFAULT_ALPHABET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
   String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
   String BASE_BIG_ALPHABET = ".0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";
-  String BIG_ALPHABET = "TVWboQg4pGnE9w0_rhSqFLKmdxceN~k5RBtUDf3iPvMX12OAslIu6yJCa8HYz7.jZ"; // scrambled LEGAL_URI_ALPHABET
+  String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.~_"; // scrambled LEGAL_URI_ALPHABET
 
   // Attribute getters/setters - factory constructors will handle most cases.
   char getSeparator();
