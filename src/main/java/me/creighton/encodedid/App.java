@@ -34,6 +34,14 @@ public class App {
         System.out.printf("%d encodes to %s\n", foo, s = encodedId.encodeId(foo));
         System.out.printf("%s decodes to %d\n", s, foo = encodedId.decodeId(s));
       }
+
+      if (arg.equals("-check") && i + 1 < args.length) {
+        foo = Long.valueOf(args[i+1]);
+        encodedId.setCheckedEncoder(true);
+        System.out.printf("%d encodes to %s with check char.\n", foo, s = encodedId.encodeId(foo));
+        System.out.printf("%s decodes to %d with check char.\n", s, foo = encodedId.decodeId(s));
+        encodedId.setCheckedEncoder(false);
+      }
       i++;
     }
 

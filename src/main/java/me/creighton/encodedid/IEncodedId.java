@@ -44,7 +44,8 @@ public interface IEncodedId {
   void setPadWidth (int padWidth) throws EncodedIdException;
   int getSegmentLength ();
   void setSegmentLength (int segmentLength) throws EncodedIdException;
-
+  boolean isCheckedEncoder (); // Indicates if this instance of IEncodedId requires check characters.
+  void setCheckedEncoder (boolean isCheckedEncoder);
 
   // Primary work methods
   String encodeId (long id) throws EncodedIdException;

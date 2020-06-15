@@ -51,7 +51,8 @@
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
                                 <mainClass>me.creighton.encodedid.App</mainClass>
-                            </manifest>                        </archive>
+                            </manifest>
+                        </archive>
                     </configuration>
                 </plugin>
             </plugins>

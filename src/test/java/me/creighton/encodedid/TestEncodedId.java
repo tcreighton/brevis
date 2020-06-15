@@ -2,6 +2,8 @@ package me.creighton.encodedid;
 
 import org.junit.jupiter.api.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class TestEncodedId {
 
   static IEncodedId encoder1; // All defaults
@@ -27,6 +29,7 @@ public class TestEncodedId {
   public void encodingTests () {
     String e_id0x00 = encoder1.encodeId(id0x00);
     String e_id1xff = encoder1.encodeId(id1xff);
+    String s;
 
     System.out.println(id0x00 + " encodes as " + e_id0x00);
     System.out.println(id1xff + " encodes as " + e_id1xff);
@@ -34,24 +37,128 @@ public class TestEncodedId {
     System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id2x80000, encoder2.encodeId(id2x80000));
     System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id3xfffff, encoder2.encodeId(id3xfffff));
 
-    long d;
-    System.out.println("Using TightlyEncodedId:");
+    long d, e;
+    System.out.println("\nUsing Default Alphabet");
     d = 0;
-    System.out.printf("%d encodes as %s\n", d, encoder3.encodeId(d));
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d = 100;
-    System.out.printf("%d encodes as %s\n", d, encoder3.encodeId(d));
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d = 1000;
-    System.out.printf("%d encodes as %s\n", d, encoder3.encodeId(d));
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d = 10000;
-    System.out.printf("%d encodes as %s\n", d, encoder3.encodeId(d));
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d = 100000;
-    System.out.printf("%d encodes as %s\n", d, encoder3.encodeId(d));
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d = 1 * 1000 * 1000;  // 1 million
-    System.out.printf("1 million encodes as %s\n", encoder3.encodeId(d));
+    System.out.printf("1 million encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d *= 1000; // 1 billion
-    System.out.printf("1 billion encodes as %s\n", encoder3.encodeId(d));
+    System.out.printf("1 billion encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
     d *= 1000; // 1 trillion
-    System.out.printf("1 trillion encodes as %s\n", encoder3.encodeId(d));
+    System.out.printf("1 trillion encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+
+    System.out.println("\nDefault Alphabet with check digit.");
+
+    encoder1.setCheckedEncoder(true);
+
+    d = 0;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d = 100;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d = 1000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d = 10000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d = 100000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d = 1 * 1000 * 1000;  // 1 million
+    System.out.printf("1 million encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 billion
+    System.out.printf("1 billion encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 trillion
+    System.out.printf("1 trillion encodes as %s; decodes to %d\n", s = encoder1.encodeId(d), e = encoder1.decodeId(s));
+    assertEquals(d,e);
+
+
+    System.out.println("\nUsing TightlyEncodedId:");
+    assertEquals(d,e);
+    d = 0;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 100;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 1000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 10000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 100000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 1 * 1000 * 1000;  // 1 million
+    System.out.printf("1 million encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 billion
+    System.out.printf("1 billion encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 trillion
+    System.out.printf("1 trillion encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+
+    encoder3.setCheckedEncoder(true);
+    System.out.println("\nUsing TightlyEncodedId with check character:");
+    assertEquals(d,e);
+    d = 0;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 100;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 1000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 10000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 100000;
+    System.out.printf("%d encodes as %s; decodes to %d\n", d, s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d = 1 * 1000 * 1000;  // 1 million
+    System.out.printf("1 million encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 billion
+    System.out.printf("1 billion encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    d *= 1000; // 1 trillion
+    System.out.printf("1 trillion encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId(s));
+    assertEquals(d,e);
+    try {
+      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId("whakQUvW"));
+    } catch (EncodedIdException ex) {
+      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
+    }
+    try {
+      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s = encoder3.encodeId(d), e = encoder3.decodeId("hwakQUvq"));
+    } catch (EncodedIdException ex) {
+      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
+    }
+
   }
 
 }
