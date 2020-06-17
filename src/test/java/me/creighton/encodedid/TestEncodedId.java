@@ -2,6 +2,8 @@ package me.creighton.encodedid;
 
 import org.junit.jupiter.api.*;
 
+import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.Utilities.unscramble;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEncodedId {
@@ -19,10 +21,28 @@ public class TestEncodedId {
   static void init () {
 
     encoder1 = IEncodedId.EncodedIdFactory();
-    encoder2 = IEncodedId.EncodedIdFactory(IEncodedId.BIG_ALPHABET);
+    encoder2 = IEncodedId.EncodedIdFactory(IAlphabet.BIG_ALPHABET);
     encoder2.setUseSeparator(false);
     encoder2.setPadWidth(0);
     encoder3 = IEncodedId.TightlyEncodedIdFactory();
+  }
+
+  @Test
+  public void constantsValidation () {
+    String s1, s2;
+
+    // Check that defined alphabets have all the same characters as its character set.
+
+    s1 = unscramble(BASE_DEFAULT_CHARACTER_SET);
+    s2 = unscramble(DEFAULT_ALPHABET);
+
+    assertTrue(s1.equals(s2));
+
+    s1 = unscramble(BASE_BIG_CHARACTER_SET);
+    s2 = unscramble(BIG_ALPHABET);
+
+    assertTrue(s1.equals(s2));
+
   }
 
   @Test

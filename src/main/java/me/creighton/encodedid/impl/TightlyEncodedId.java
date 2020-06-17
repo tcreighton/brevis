@@ -1,7 +1,7 @@
 package me.creighton.encodedid.impl;
 
 
-import static me.creighton.encodedid.IEncodedId.BIG_ALPHABET;
+import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
 
 // This class is an extension of the base EncodedId.
 // Its purpose is to make it easy to get a compact encoding that also adheres to the rules

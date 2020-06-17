@@ -1,13 +1,19 @@
 package me.creighton.encodedid;
 
-import static me.creighton.encodedid.IEncodedId.*;
+import static me.creighton.encodedid.IAlphabet.*;
 import static me.creighton.encodedid.Utilities.*;
 
 public class App {
   public static void stats() {
-    System.out.printf("Base Default Alphabet (len is %d): %s\n", BASE_DEFAULT_ALPHABET.length(), BASE_DEFAULT_ALPHABET);
-    System.out.printf("Default Alphabet (len is %d): %s\n", DEFAULT_ALPHABET.length(), DEFAULT_ALPHABET);
-    System.out.printf("Base Big Alphabet (len is %d): %s\n", BASE_BIG_ALPHABET.length(), BASE_BIG_ALPHABET);
+    System.out.printf("Base Default Character Set (len is %d): %s\n",
+          BASE_DEFAULT_CHARACTER_SET.length(),
+          unscramble(BASE_DEFAULT_CHARACTER_SET));
+    System.out.printf("Default Alphabet (len is %d): %s\n",
+          DEFAULT_ALPHABET.length(),
+          DEFAULT_ALPHABET);
+    System.out.printf("Base Big Character Set (len is %d): %s\n",
+          BASE_BIG_CHARACTER_SET.length(),
+          unscramble(BASE_BIG_CHARACTER_SET));
     System.out.printf("Big Alphabet (len is %d): %s\n", BIG_ALPHABET.length(), BIG_ALPHABET);
 
   }

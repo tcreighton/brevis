@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static me.creighton.encodedid.IEncodedId.LEGAL_URI_ALPHABET;
+import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
 
 public class Utilities {
 
@@ -14,7 +14,7 @@ public class Utilities {
     // The separator MUST be a legal URL character.
     // The separator MUST NOT be in the alphabet.
 
-    boolean retVal = (LEGAL_URI_ALPHABET.indexOf(separator) > -1 || separator == '-') &&
+    boolean retVal = (LEGAL_URI_CHARACTER_SET.indexOf(separator) > -1 || separator == '-') &&
         alphabet.indexOf(separator) == -1;
     return retVal;
   }
@@ -26,7 +26,7 @@ public class Utilities {
     char [] charArray = alphabet.toCharArray();
 
     for (char ch : charArray) {
-      if (! (retVal = LEGAL_URI_ALPHABET.indexOf(ch) > -1))
+      if (! (retVal = LEGAL_URI_CHARACTER_SET.indexOf(ch) > -1))
         break;
     }
     return retVal;
