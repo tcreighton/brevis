@@ -11,7 +11,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
   private char separator = DEFAULT_SEPARATOR;
   private String alphabet = DEFAULT_ALPHABET;
-  private boolean useSeparator = true;
+  private boolean useSeparator = false;
   private int padWidth = 0;
   private int segmentLength = DEFAULT_SEGMENT_LENGTH;
 
@@ -39,8 +39,8 @@ public class EncodedId implements IAlphabet, IEncodedId {
   public EncodedId (char separator, boolean useSeparator, String alphabet) throws EncodedIdException {
 
     setSeparator(separator);
-    setUseSeparator(useSeparator);
     setAlphabet(alphabet);
+    setUseSeparator(useSeparator);
     setPadWidth(DEFAULT_PAD_LENGTH);
     setSegmentLength(DEFAULT_SEGMENT_LENGTH);
   }
@@ -68,10 +68,12 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
   @Override
   public void setAlphabet (String alphabet) throws EncodedIdException {
-    if (! isValidAlphabet(alphabet)) {
-      throwInvalidAlphabet(alphabet);
-    }
+    // We must check that the separator is legal for this alphabet if
+    // isUseSeparator returns true.
 
+    if (isUseSeparator() && ! isValidSeparator(this.getSeparator(), alphabet)) {
+      throwInvalidSeparator(this.getSeparator());
+    }
     this.alphabet = alphabet;
     setNumberBase(alphabet.length());
   }
@@ -83,6 +85,11 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
   @Override
   public void setUseSeparator (boolean useSeparator) {
+
+    if (useSeparator && !isValidSeparator(getSeparator(), getAlphabet())) {
+      throwInvalidSeparator(getSeparator());
+    }
+
     this.useSeparator = useSeparator;
   }
 
@@ -287,7 +294,8 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
   /**
    * This function generates a check character given an encoding. Note that it assumes there
-   * are no separator characters. These MUST all be stripped prior to calling the generate function.
+   * are no separator characters. These MUST all be stripped prior to calling the generate
+   * or validate functions.
    *
    */
   protected char generateCheckCharacter (String input) throws EncodedIdException {
@@ -355,7 +363,6 @@ public class EncodedId implements IAlphabet, IEncodedId {
   }
 
   protected int codePointFromCharacter (char encodedChar) throws EncodedIdException {
-
     return getAlphabet().indexOf(encodedChar);
   }
 

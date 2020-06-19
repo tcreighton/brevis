@@ -30,6 +30,11 @@ public interface IAlphabet {
   // all decoding after that. It is not too hard to annotate an encoding to indicate which alphabet
   // to use, but that's beyond the scope of this basic implementation.
   //
+  // These Alphabets are made to work in a path element of a URL.
+  // If you create your own alphabets and want them to work in a URL,
+  // check them with isUrlAlphabet.
+  //
+
   String BASE_DEFAULT_CHARACTER_SET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
   String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
   String BASE_BIG_CHARACTER_SET = "!.0123456789:;ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";

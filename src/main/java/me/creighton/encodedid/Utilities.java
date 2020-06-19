@@ -10,16 +10,17 @@ public class Utilities {
 
   // Utility methods
 
-  public static Boolean isValidSeparator (char separator, String alphabet) {
-    // The separator MUST be a legal URL character.
-    // The separator MUST NOT be in the alphabet.
-
-    boolean retVal = (LEGAL_URI_CHARACTER_SET.indexOf(separator) > -1 || separator == '-') &&
-        alphabet.indexOf(separator) == -1;
-    return retVal;
+  public static boolean isUrlCharacter (char c) {
+    return LEGAL_URI_CHARACTER_SET.indexOf(c) > -1;
   }
 
-  public static Boolean isValidAlphabet (String alphabet) {
+  public static boolean isValidSeparator (char separator, String alphabet) {
+    // The separator MUST NOT be in the alphabet.
+
+    return alphabet.indexOf(separator) == -1;
+  }
+
+  public static boolean isValidUriAlphabet (String alphabet) {
     // The alphabet MUST contain only legal URL characters.
     boolean retVal = true;
 
@@ -49,6 +50,14 @@ public class Utilities {
     return sb.toString();
   }
 
+  /**
+   * Unscramble does not restore the String that produced the scambled String.
+   * This simply sorts the String
+   * 
+   * @param s is some String that was perhaps scrambled by hand or by scramble().
+   * @return The sorted values of s. This does not really 'unscramble' the input,
+   *          it simply sorts the input.
+   */
   public static String unscramble (String s) {
     if (null == s)
       s = "";
