@@ -19,4 +19,5 @@ The more highly compact representations, such as BIG_ALPHABET, which end up bein
 68 representation are useful for cases where we want the smallest possible representation
 of an ID. One such use case is to create a compact URL.
 
-_
+For use cases that require more validity checking, you can add a check character to any
+of the alphabets. Of course, this costs an extra character.
