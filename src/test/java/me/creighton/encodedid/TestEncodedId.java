@@ -137,6 +137,19 @@ public class TestEncodedId {
     assertEquals(d,e);
     assertEquals(d,c);
 
+    d = Long.MAX_VALUE;
+    s = encoder1.encodeId(d);
+    sc = encoder2.encodeId(d);
+    e = encoder1.decodeId(s);
+    c = encoder2.decodeId(sc);
+    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    assertEquals(d,e);
+    assertEquals(d,c);
+
+
+    // Test Tight encoding
+
+
     System.out.println("\nUsing TightlyEncodedId:");
     d = 0;
 
@@ -218,16 +231,29 @@ public class TestEncodedId {
     assertEquals(d,e);
     assertEquals(d,c);
 
+    d = Long.MAX_VALUE;
+    s = encoder4.encodeId(d);
+    sc = encoder5.encodeId(d);
+    e = encoder4.decodeId(s);
+    c = encoder5.decodeId(sc);
+    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    assertEquals(d,e);
+    assertEquals(d,c);
+
 
     try {
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n",
-          s = encoder4.encodeId(d), e = encoder4.decodeId("whakQUvW"));
+      d = 1000000000000L;
+      s = encoder2.encodeId(d);
+      e = encoder2.decodeId("DYB2-C9DM-QW");
+      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
     } catch (EncodedIdException ex) {
       System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
     }
     try {
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n",
-          s = encoder4.encodeId(d), e = encoder4.decodeId("hwakQUvq"));
+      d = 1000L * 1000L * 1000L * 1000L;
+      s = encoder5.encodeId(d);
+      e = encoder5.decodeId("oxsrN185Mkz;W");
+      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
     } catch (EncodedIdException ex) {
       System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
     }
