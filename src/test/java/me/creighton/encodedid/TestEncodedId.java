@@ -22,15 +22,20 @@ public class TestEncodedId {
   @BeforeAll
   static void init () {
 
-    encoder1 = IEncodedId.EncodedIdFactory();
-    encoder2 = IEncodedId.EncodedIdFactory();
-    encoder2.setCheckedEncoder(true);
-    encoder3 = IEncodedId.EncodedIdFactory(IAlphabet.BIG_ALPHABET);
-    encoder3.setUseSeparator(false);
-    encoder3.setPadWidth(0);
-    encoder4 = IEncodedId.TightlyEncodedIdFactory();
-    encoder5 = IEncodedId.TightlyEncodedIdFactory();
-    encoder5.setCheckedEncoder(true);
+    encoder1 = IEncodedId.getEncodedIdBuilder()
+                .build();
+    encoder2 = IEncodedId.getEncodedIdBuilder()
+                .checkedEncoder(true)
+                .build();
+    encoder3 = IEncodedId.getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
+                .separator(false)
+                .padWidth(0)
+                .build();
+    encoder4 = IEncodedId.getTightlyEncodedIdBuilder()
+                .build();
+    encoder5 = IEncodedId.getTightlyEncodedIdBuilder()
+                .checkedEncoder(true)
+                .build();
   }
 
   @Test

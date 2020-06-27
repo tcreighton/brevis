@@ -3,6 +3,8 @@ package me.creighton.encodedid;
 import me.creighton.encodedid.impl.EncodedId;
 import me.creighton.encodedid.impl.TightlyEncodedId;
 
+import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
+
 public interface IEncodedId {
 
   // Default configuration constants
@@ -14,44 +16,55 @@ public interface IEncodedId {
   int MAX_PAD_LENGTH = 30;  // max number of encoded characters to pad with 0.
 
   // Attribute getters/setters - factory constructors will handle most cases.
-  char getSeparator();
-  void setSeparator(char separator);
-  String getAlphabet ();
-  void setAlphabet (String alphabet) throws EncodedIdException;
-  boolean isUseSeparator ();
-  void setUseSeparator (boolean useSeparator);
-  int getPadWidth ();
-  void setPadWidth (int padWidth) throws EncodedIdException;
-  int getSegmentLength ();
-  void setSegmentLength (int segmentLength) throws EncodedIdException;
-  boolean isCheckedEncoder (); // Indicates if this instance of IEncodedId requires check characters.
-  void setCheckedEncoder (boolean isCheckedEncoder);
+  char separator();
+  void separator(char separator);
+  String alphabet();
+  void alphabet(String alphabet, String characterSet) throws EncodedIdException;
+  boolean useSeparator();
+  void useSeparator(boolean useSeparator);
+  int padWidth();
+  void padWidth(int padWidth) throws EncodedIdException;
+  int segmentLength();
+  void segmentLength(int segmentLength) throws EncodedIdException;
+  boolean checkedEncoder(); // Indicates if this instance of IEncodedId requires check characters.
+  void checkedEncoder(boolean checkedEncoder);
 
   // Primary work methods
   String encodeId (long id) throws EncodedIdException;
   String encodeIdWithoutSeparator (long id) throws EncodedIdException;
   long decodeId (String encodedId) throws EncodedIdException;
 
-  // Public constructors for various implementations
+  // Public builders for building various types of IEncodedId.
 
-  static IEncodedId EncodedIdFactory () {
-    return new EncodedId();
+  static IEncodedId.Builder getEncodedIdBuilder() {
+    return new EncodedId.Builder();
   }
 
-  static IEncodedId EncodedIdFactory (String alphabet) {
-    return new EncodedId(alphabet);
+  static Builder getEncodedIdBuilder(String alphabet, String characterSet) {
+    return new EncodedId.Builder(alphabet, characterSet);
   }
 
-  static IEncodedId EncodedIdFactory (char separator) {
-    return new EncodedId(separator);
+  // TightlyEncodedId can only have alphabets that are derived from BASE_BIG_CHARACTER_SET.
+  static IEncodedId.Builder getTightlyEncodedIdBuilder() {
+    return new TightlyEncodedId.Builder();
   }
 
-  static IEncodedId EncodedIdFactory (char separator, String alphabet) {
-    return new EncodedId(separator, alphabet);
+  static Builder getTightlyEncodedIdBuilder(String alphabet) {
+    return new TightlyEncodedId.Builder(alphabet, BASE_BIG_CHARACTER_SET);
   }
 
-  static IEncodedId TightlyEncodedIdFactory () {
-    return new TightlyEncodedId();
+
+  interface Builder {
+
+    Builder alphabet(String alphabet, String characterSet);
+    Builder checkedEncoder(boolean checkedEncoder);
+    Builder padWidth(int padWidth);
+    Builder separator(char separator);
+    Builder separator(boolean separator);
+    Builder segmentLength(int segmentLength);
+
+    IEncodedId build();
   }
+
 
 }

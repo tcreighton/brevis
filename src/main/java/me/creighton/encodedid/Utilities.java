@@ -1,8 +1,6 @@
 package me.creighton.encodedid;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
 
@@ -20,17 +18,33 @@ public class Utilities {
     return alphabet.indexOf(separator) == -1;
   }
 
+  public static Set<Character> stringToCharacterSet(String s) {
+    Set<Character> set = new HashSet<>();
+    for (char c : s.toCharArray()) {
+      set.add(c);
+    }
+    return set;
+  }
+
+
+  public static boolean isValidAlphabet (String alphabet, String characterSet) {
+    // Every character in alphabet must be in characterSet.
+
+    if (null != alphabet && null != characterSet) {
+      return stringToCharacterSet(characterSet).containsAll
+          (stringToCharacterSet(alphabet));
+    } else
+      return false;
+  }
+
   public static boolean isValidUriAlphabet (String alphabet) {
     // The alphabet MUST contain only legal URL characters.
-    boolean retVal = true;
 
-    char [] charArray = alphabet.toCharArray();
-
-    for (char ch : charArray) {
-      if (! (retVal = LEGAL_URI_CHARACTER_SET.indexOf(ch) > -1))
-        break;
-    }
-    return retVal;
+    if (null != alphabet) {
+      return stringToCharacterSet(LEGAL_URI_CHARACTER_SET).containsAll
+          (stringToCharacterSet(alphabet));
+    } else
+      return false;
   }
 
   // Convenience method to let you easily scramble a character string for a new alphabet.

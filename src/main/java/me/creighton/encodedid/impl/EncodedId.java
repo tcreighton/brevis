@@ -4,6 +4,7 @@ import me.creighton.encodedid.EncodedIdException;
 import me.creighton.encodedid.IAlphabet;
 import me.creighton.encodedid.IEncodedId;
 
+import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.*;
 
 public class EncodedId implements IAlphabet, IEncodedId {
@@ -11,103 +12,100 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
   private char separator = DEFAULT_SEPARATOR;
   private String alphabet = DEFAULT_ALPHABET;
+  private String characterSet = BASE_DEFAULT_CHARACTER_SET;
   private boolean useSeparator = false;
   private int padWidth = 0;
   private int segmentLength = DEFAULT_SEGMENT_LENGTH;
 
   private int numberBase = 0;
-  private boolean isCheckedEncoder = false; // Default is to not use check characters.
+  private boolean checkedEncoder = false; // Default is to not use check characters.
 
   // Constructors
 
   public EncodedId () throws EncodedIdException {
-    this(DEFAULT_SEPARATOR, DEFAULT_ALPHABET);
+    this(new Builder());
   }
 
-  public EncodedId (String alphabet) throws EncodedIdException {
-    this(DEFAULT_SEPARATOR, alphabet);
+  public EncodedId (String alphabet, String characterSet) throws EncodedIdException {
+    this(new Builder(alphabet, characterSet));
   }
 
-  public EncodedId (char separator) throws EncodedIdException {
-    this(separator, DEFAULT_ALPHABET);
-  }
-
-  public EncodedId (char separator, String alphabet) throws EncodedIdException {
-    this(separator, true, alphabet);
-  }
-
-  public EncodedId (char separator, boolean useSeparator, String alphabet) throws EncodedIdException {
-
-    setSeparator(separator);
-    setAlphabet(alphabet);
-    setUseSeparator(useSeparator);
-    setPadWidth(DEFAULT_PAD_LENGTH);
-    setSegmentLength(DEFAULT_SEGMENT_LENGTH);
+  public EncodedId (Builder builder) throws EncodedIdException {
+    this.alphabet(builder.alphabet, builder.characterSet);
+    this.separator(builder.separator);
+    this.useSeparator(builder.useSeparator);
+    this.segmentLength(builder.segmentLength);
+    this.checkedEncoder(builder.checkedEncoder);
+    this.padWidth(builder.padWidth);
   }
 
   // Public Getters/Setters
 
   @Override
-  public char getSeparator() {
+  public char separator() {
     return this.separator;
   }
 
   @Override
-  public void setSeparator(char separator) {
-    if (! isValidSeparator(separator, getAlphabet())) {
-      throwInvalidSeparator(separator);
+  public void separator(char separator) {
+    if (! isValidSeparator(separator, this.alphabet)) {
+      throwInvalidSeparator(separator, this.alphabet);
     }
 
     this.separator = separator;
   }
 
   @Override
-  public String getAlphabet () {
+  public String alphabet() {
     return this.alphabet;
   }
 
   @Override
-  public void setAlphabet (String alphabet) throws EncodedIdException {
+  public void alphabet(String alphabet, String characterSet) throws EncodedIdException {
+    // Must check that the alphabet is legal for the characterSet
     // We must check that the separator is legal for this alphabet if
     // isUseSeparator returns true.
 
-    if (isUseSeparator() && ! isValidSeparator(this.getSeparator(), alphabet)) {
-      throwInvalidSeparator(this.getSeparator());
+    if (! isValidAlphabet(alphabet, characterSet)) {
+      throwInvalidAlphabet(alphabet, characterSet);
+    }
+    if (useSeparator() && ! isValidSeparator(this.separator(), alphabet)) {
+      throwInvalidSeparator(this.separator, alphabet);
     }
     this.alphabet = alphabet;
-    setNumberBase(alphabet.length());
+    numberBase(alphabet.length());
   }
 
   @Override
-  public boolean isUseSeparator () {
+  public boolean useSeparator() {
     return this.useSeparator;
   }
 
   @Override
-  public void setUseSeparator (boolean useSeparator) {
+  public void useSeparator(boolean separator) {
 
-    if (useSeparator && !isValidSeparator(getSeparator(), getAlphabet())) {
-      throwInvalidSeparator(getSeparator());
+    if (separator && !isValidSeparator(this.separator(), alphabet())) {
+      throwInvalidSeparator(this.separator, this.alphabet);
     }
 
-    this.useSeparator = useSeparator;
+    this.useSeparator = separator;
   }
 
-  protected int getNumberBase () {
+  protected int numberBase() {
     return this.numberBase;
   }
 
-  private void setNumberBase (int numberBase) {
+  private void numberBase(int numberBase) {
     this.numberBase = numberBase;
   }
 
   @Override
-  public int getPadWidth () {
+  public int padWidth() {
     return this.padWidth;
   }
 
   @Override
-  public void setPadWidth (int padWidth) throws EncodedIdException {
+  public void padWidth(int padWidth) throws EncodedIdException {
     if (padWidth < 0 || padWidth > MAX_PAD_LENGTH)
       throwInvalidPadWidth(padWidth);
 
@@ -115,12 +113,12 @@ public class EncodedId implements IAlphabet, IEncodedId {
   }
 
   @Override
-  public int getSegmentLength () {
+  public int segmentLength() {
     return this.segmentLength;
   }
 
   @Override
-  public void setSegmentLength (int segmentLength) throws EncodedIdException {
+  public void segmentLength(int segmentLength) throws EncodedIdException {
     if (segmentLength < MIN_SEGMENT_LENGTH || segmentLength > MAX_SEGMENT_LENGTH) {
       throwBadSegmentLength(segmentLength);
       // Never returns to here.
@@ -130,13 +128,13 @@ public class EncodedId implements IAlphabet, IEncodedId {
   }
 
   @Override
-  public boolean isCheckedEncoder () {
-    return this.isCheckedEncoder;
+  public boolean checkedEncoder() {
+    return this.checkedEncoder;
   }
 
   @Override
-  public void setCheckedEncoder (boolean isCheckedEncoder) {
-    this.isCheckedEncoder = isCheckedEncoder;
+  public void checkedEncoder(boolean checkedEncoder) {
+    this.checkedEncoder = checkedEncoder;
   }
 
   // Public Methods
@@ -163,14 +161,14 @@ public class EncodedId implements IAlphabet, IEncodedId {
       eId.append(encodeValue(0));       // encode that value
     }
     while (id > 0) {
-      nextVal = (int) (id % getNumberBase()); // grab next value to encode
-      id /= getNumberBase();                  // reduce the source by one value size
+      nextVal = (int) (id % numberBase()); // grab next value to encode
+      id /= numberBase();                  // reduce the source by one value size
       eId.append(encodeValue(nextVal));       // encode that value
     }
 
     // Next we need to pad to the min size. Remember that we are building this in reverse.
 
-    countPads = getPadWidth() - eId.length() - (isCheckedEncoder() ? 1 : 0);
+    countPads = padWidth() - eId.length() - (checkedEncoder() ? 1 : 0);
     while (countPads-- > 0) {
       eId.append(encodeValue(0));         // Pad with 0 representation.
     }
@@ -180,7 +178,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
 
     // Now append check character if enabled
 
-    if (isCheckedEncoder()) {
+    if (checkedEncoder()) {
       char checkCharacter = generateCheckCharacter(eId.toString());
 
       eId.append(checkCharacter);
@@ -204,7 +202,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
     }
     if (useSeparator) {
       // If this is true - scan for and eliminate all separator characters.
-      s = "" + getSeparator();
+      s = "" + this.separator();
       s = encodedId.replaceAll(s, "");
     }
     // At this point we have an encoded string with no separators
@@ -213,7 +211,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
     // If isCheckedEncoder then the right-most character is the check character.
     // First validate that check character is correct, then decode a shorter length.
 
-    if (isCheckedEncoder()) {
+    if (checkedEncoder()) {
       encodedLength = s.length() - 1;
       if (! validateCheckCharacter(s)) {
         throwInvalidCheckCharacter(s);
@@ -224,7 +222,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
     }
 
     for (int i = 0; i < encodedLength; i++) {
-      id *= getNumberBase();  // Shift current value in the accumulator
+      id *= numberBase();  // Shift current value in the accumulator
       nextVal = decodeChar(s.charAt(i));
       id += nextVal;          // Add in the value of the current character.
     }
@@ -241,18 +239,18 @@ public class EncodedId implements IAlphabet, IEncodedId {
    */
   protected char encodeValue(int value) {
     char ch;
-    if (value < 0 || value >= getNumberBase()) { // number base is the length of the alphabet
+    if (value < 0 || value >= numberBase()) { // number base is the length of the alphabet
       throwInvalidEncodingValue(value);
     }
 
-    ch = getAlphabet().charAt(value);
+    ch = alphabet().charAt(value);
     return ch;
   }
 
   protected int decodeChar (char encodedChar) throws EncodedIdException {
     int value;
 
-    value = getAlphabet().indexOf(encodedChar);
+    value = alphabet().indexOf(encodedChar);
     if (-1 == value) {
       // This means encodedId has a character not in the alphabet - bad!
       throwInvalidCharacter(encodedChar);
@@ -270,9 +268,9 @@ public class EncodedId implements IAlphabet, IEncodedId {
   protected String addSeparators (String s) {
     StringBuilder sb = new StringBuilder(s);
 
-    if (isUseSeparator()) {
-      for (int i = getSegmentLength(); i < sb.length(); i += getSegmentLength() + 1) {
-        sb.insert(i, getSeparator());
+    if (useSeparator()) {
+      for (int i = segmentLength(); i < sb.length(); i += segmentLength() + 1) {
+        sb.insert(i, this.separator());
       }
     }
 
@@ -355,7 +353,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
    */
 
   protected int numberOfValidInputCharacters () {
-    return getNumberBase();
+    return numberBase();
   }
 
   protected char characterFromCodePoint (int value) {
@@ -363,42 +361,82 @@ public class EncodedId implements IAlphabet, IEncodedId {
   }
 
   protected int codePointFromCharacter (char encodedChar) throws EncodedIdException {
-    return getAlphabet().indexOf(encodedChar);
+    return alphabet().indexOf(encodedChar);
   }
 
   /**
-   * Exception wrappers
+   * Builder class
    */
 
-  private void throwInvalidSeparator (char separator) throws EncodedIdException {
-    throw new EncodedIdException("Invalid Separator: " + separator);
+  public static class Builder implements IEncodedId.Builder {
+    private String alphabet;
+    private String characterSet;
+    private boolean checkedEncoder = false;
+    private char separator = '-';
+    private boolean useSeparator = false;
+    private int segmentLength = MIN_SEGMENT_LENGTH;
+    private int padWidth = 0;
+
+    public Builder () {
+      this(DEFAULT_ALPHABET, BASE_DEFAULT_CHARACTER_SET);
+    }
+
+    public Builder (String alphabet, String characterSet) {
+      this.alphabet(alphabet, characterSet);
+    }
+
+    public IEncodedId.Builder alphabet(String alphabet, String characterSet) {
+      this.alphabet = alphabet;
+      this.characterSet = characterSet;
+
+      if (! isValidAlphabet(alphabet, characterSet)) {
+        throwInvalidAlphabet(alphabet, characterSet);
+      }
+      return this;
+    }
+
+    public IEncodedId.Builder separator (char separator) {
+      this.separator = separator;
+
+      if (! isValidSeparator(separator, this.alphabet)) {
+        throwInvalidSeparator(separator, this.alphabet);
+      }
+      return this;
+    }
+
+    public IEncodedId.Builder separator(boolean separator) {
+      this.useSeparator = separator;
+
+      if (separator && ! isValidSeparator(this.separator, this.alphabet)) {
+        throwInvalidSeparator(this.separator, this.alphabet);
+      }
+      return this;
+    }
+
+    public IEncodedId.Builder segmentLength(int segmentLength) {
+      this.segmentLength = segmentLength;
+
+      if (segmentLength < MIN_SEGMENT_LENGTH || segmentLength > MAX_SEGMENT_LENGTH) {
+        throwBadSegmentLength(segmentLength);
+        // Never returns to here.
+      }
+      return this;
+    }
+
+    public IEncodedId.Builder checkedEncoder(boolean checkedEncoder) {
+      this.checkedEncoder = checkedEncoder;
+      return this;
+    }
+
+    public IEncodedId.Builder padWidth (int padWidth) {
+      this.padWidth = padWidth;
+      return this;
+    }
+
+    public IEncodedId build () {
+      return new EncodedId(this);
+    }
   }
 
-  private void throwInvalidAlphabet (String alphabet) throws EncodedIdException {
-    throw new EncodedIdException("Invalid alphabet: " + alphabet);
-  }
 
-  private void throwInvalidId (long id) throws EncodedIdException {
-    throw new EncodedIdException("id is less than 0");
-  }
-
-  private void throwInvalidEncodingValue (int i) throws EncodedIdException {
-    throw new EncodedIdException("Invalid value for encoding: " + i);
-  }
-
-  private void throwInvalidPadWidth (int padWidth) throws EncodedIdException {
-    throw new EncodedIdException("Invalid padWidth: " + padWidth);
-  }
-
-  private void throwInvalidCharacter (char c) throws EncodedIdException {
-    throw new EncodedIdException("Invalid character for alphabet: " + c);
-  }
-
-  private void throwBadSegmentLength (int segmentLength) throws EncodedIdException {
-    throw new EncodedIdException("segmentLength out of range: " + segmentLength);
-  }
-
-  private void throwInvalidCheckCharacter (String s) throws EncodedIdException {
-    throw new EncodedIdException("Invalid check character in encoding: " + s);
-  }
 }
