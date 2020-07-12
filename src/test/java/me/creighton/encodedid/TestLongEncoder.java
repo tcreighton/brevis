@@ -6,13 +6,13 @@ import static me.creighton.encodedid.IAlphabet.*;
 import static me.creighton.encodedid.Utilities.unscramble;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestEncodedId {
+public class TestLongEncoder {
 
-  static IEncodedId encoder1; // All defaults
-  static IEncodedId encoder2; // All defaults + check character
-  static IEncodedId encoder3; // Big alphabet & no separators & no pad
-  static IEncodedId encoder4; // TightlyEncodedId (same as encoder3)
-  static IEncodedId encoder5; // TightlyEncodedId (same as encoder3)
+  static ILongEncoder encoder1; // All defaults
+  static ILongEncoder encoder2; // All defaults + check character
+  static ILongEncoder encoder3; // Big alphabet & no separators & no pad
+  static ILongEncoder encoder4; // TightlyEncodedId (same as encoder3)
+  static ILongEncoder encoder5; // TightlyEncodedId (same as encoder3)
 
   static final long id0x00 = 0x00;
   static final long id1xff = 0xff;
@@ -23,19 +23,19 @@ public class TestEncodedId {
   static void init () {
 
     encoder1 = IEncodedId.getEncodedIdBuilder()
-                .build();
+                .buildLongEncoder();
     encoder2 = IEncodedId.getEncodedIdBuilder()
                 .checkedEncoder(true)
-                .build();
+                .buildLongEncoder();
     encoder3 = IEncodedId.getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
                 .separator(false)
                 .padWidth(0)
-                .build();
+                .buildLongEncoder();
     encoder4 = IEncodedId.getTightlyEncodedIdBuilder()
-                .build();
+                .buildLongEncoder();
     encoder5 = IEncodedId.getTightlyEncodedIdBuilder()
                 .checkedEncoder(true)
-                .build();
+                .buildLongEncoder();
   }
 
   @Test

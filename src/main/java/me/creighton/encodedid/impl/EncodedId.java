@@ -3,16 +3,17 @@ package me.creighton.encodedid.impl;
 import me.creighton.encodedid.EncodedIdException;
 import me.creighton.encodedid.IAlphabet;
 import me.creighton.encodedid.IEncodedId;
+import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.*;
 
-public class EncodedId implements IAlphabet, IEncodedId {
+public abstract class EncodedId implements IAlphabet, IEncodedId {
 
 
   private char separator = DEFAULT_SEPARATOR;
   private String alphabet = DEFAULT_ALPHABET;
-  private String characterSet = BASE_DEFAULT_CHARACTER_SET;
+//  private String characterSet = BASE_DEFAULT_CHARACTER_SET;
   private boolean useSeparator = false;
   private int padWidth = 0;
   private int segmentLength = DEFAULT_SEGMENT_LENGTH;
@@ -21,14 +22,6 @@ public class EncodedId implements IAlphabet, IEncodedId {
   private boolean checkedEncoder = false; // Default is to not use check characters.
 
   // Constructors
-
-  public EncodedId () throws EncodedIdException {
-    this(new Builder());
-  }
-
-  public EncodedId (String alphabet, String characterSet) throws EncodedIdException {
-    this(new Builder(alphabet, characterSet));
-  }
 
   public EncodedId (Builder builder) throws EncodedIdException {
     this.alphabet(builder.alphabet, builder.characterSet);
@@ -64,7 +57,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
   public void alphabet(String alphabet, String characterSet) throws EncodedIdException {
     // Must check that the alphabet is legal for the characterSet
     // We must check that the separator is legal for this alphabet if
-    // isUseSeparator returns true.
+    // useSeparator returns true.
 
     if (! isValidAlphabet(alphabet, characterSet)) {
       throwInvalidAlphabet(alphabet, characterSet);
@@ -137,98 +130,6 @@ public class EncodedId implements IAlphabet, IEncodedId {
     this.checkedEncoder = checkedEncoder;
   }
 
-  // Public Methods
-
-  @Override
-  public String encodeId (long id) throws EncodedIdException {
-
-    String s = encodeIdWithoutSeparator(id);
-
-    return addSeparators(s);
-  }
-
-  @Override
-  public String encodeIdWithoutSeparator (long id) throws EncodedIdException {
-
-    StringBuilder eId = new StringBuilder();
-    int nextVal = 0;
-    int countPads = 0;
-
-    if (id < 0)
-      throwInvalidId(id);
-
-    if (0 == id) {
-      eId.append(encodeValue(0));       // encode that value
-    }
-    while (id > 0) {
-      nextVal = (int) (id % numberBase()); // grab next value to encode
-      id /= numberBase();                  // reduce the source by one value size
-      eId.append(encodeValue(nextVal));       // encode that value
-    }
-
-    // Next we need to pad to the min size. Remember that we are building this in reverse.
-
-    countPads = padWidth() - eId.length() - (checkedEncoder() ? 1 : 0);
-    while (countPads-- > 0) {
-      eId.append(encodeValue(0));         // Pad with 0 representation.
-    }
-
-    // After optional padding, reverse the string to make it the right way.
-    eId.reverse();
-
-    // Now append check character if enabled
-
-    if (checkedEncoder()) {
-      char checkCharacter = generateCheckCharacter(eId.toString());
-
-      eId.append(checkCharacter);
-    }
-
-    return eId.toString();
-  }
-
-  @Override
-  public long decodeId(String encodedId) throws EncodedIdException {
-    long id = (null == encodedId || encodedId.length() == 0) ? -1 : 0;
-    int nextVal;
-    int encodedLength;  // This is used to determine how much of encodedId to decode (see isCheckedEncoder)
-
-    String s = encodedId;
-
-    if (-1 == id) {
-      // Invalid encodedId
-      throwInvalidCharacter(' '); // Not really a space - null length or null
-      // Never returns to here
-    }
-    if (useSeparator) {
-      // If this is true - scan for and eliminate all separator characters.
-      s = "" + this.separator();
-      s = encodedId.replaceAll(s, "");
-    }
-    // At this point we have an encoded string with no separators
-    // Note that 0 == id at this point
-
-    // If isCheckedEncoder then the right-most character is the check character.
-    // First validate that check character is correct, then decode a shorter length.
-
-    if (checkedEncoder()) {
-      encodedLength = s.length() - 1;
-      if (! validateCheckCharacter(s)) {
-        throwInvalidCheckCharacter(s);
-        // !!! Never returns here !!!
-      }
-    } else {
-      encodedLength = s.length();
-    }
-
-    for (int i = 0; i < encodedLength; i++) {
-      id *= numberBase();  // Shift current value in the accumulator
-      nextVal = decodeChar(s.charAt(i));
-      id += nextVal;          // Add in the value of the current character.
-    }
-    return id;
-  }
-
   // Non-public methods
 
   /**
@@ -277,7 +178,7 @@ public class EncodedId implements IAlphabet, IEncodedId {
     return sb.toString();
   }
 
-  /**
+  /*
    * These next methods implement a checksum algorithm. The checksum is computed across
    * the characters of an encoding and then is itself encoded and appended as the last
    * (least significant) character of the overall encoding.
@@ -433,8 +334,8 @@ public class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
-    public IEncodedId build () {
-      return new EncodedId(this);
+    public ILongEncoder buildLongEncoder () {
+      return new LongEncoder(this);
     }
   }
 

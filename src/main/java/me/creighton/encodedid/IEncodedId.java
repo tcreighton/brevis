@@ -1,9 +1,9 @@
 package me.creighton.encodedid;
 
 import me.creighton.encodedid.impl.EncodedId;
-import me.creighton.encodedid.impl.TightlyEncodedId;
 
 import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
+import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
 
 public interface IEncodedId {
 
@@ -29,14 +29,9 @@ public interface IEncodedId {
   boolean checkedEncoder(); // Indicates if this instance of IEncodedId requires check characters.
   void checkedEncoder(boolean checkedEncoder);
 
-  // Primary work methods
-  String encodeId (long id) throws EncodedIdException;
-  String encodeIdWithoutSeparator (long id) throws EncodedIdException;
-  long decodeId (String encodedId) throws EncodedIdException;
-
   // Public builders for building various types of IEncodedId.
 
-  static IEncodedId.Builder getEncodedIdBuilder() {
+  static Builder getEncodedIdBuilder() {
     return new EncodedId.Builder();
   }
 
@@ -45,14 +40,14 @@ public interface IEncodedId {
   }
 
   // TightlyEncodedId can only have alphabets that are derived from BASE_BIG_CHARACTER_SET.
-  static IEncodedId.Builder getTightlyEncodedIdBuilder() {
-    return new TightlyEncodedId.Builder();
+
+  static Builder getTightlyEncodedIdBuilder() {
+    return new EncodedId.Builder(BIG_ALPHABET, BASE_BIG_CHARACTER_SET);
   }
 
   static Builder getTightlyEncodedIdBuilder(String alphabet) {
-    return new TightlyEncodedId.Builder(alphabet, BASE_BIG_CHARACTER_SET);
+    return new EncodedId.Builder(alphabet, BASE_BIG_CHARACTER_SET);
   }
-
 
   interface Builder {
 
@@ -63,7 +58,7 @@ public interface IEncodedId {
     Builder separator(boolean separator);
     Builder segmentLength(int segmentLength);
 
-    IEncodedId build();
+    ILongEncoder buildLongEncoder();
   }
 
 

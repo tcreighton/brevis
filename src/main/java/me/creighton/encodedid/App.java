@@ -23,7 +23,7 @@ public class App {
 
     long foo;
     String s;
-    IEncodedId encodedId = IEncodedId.getEncodedIdBuilder().build();
+    ILongEncoder encodedLong = IEncodedId.getEncodedIdBuilder().buildLongEncoder();
     int i = 0;
     for (String arg : args) {
       if (arg.equals("-stats"))
@@ -37,16 +37,16 @@ public class App {
 
       if (arg.equals("-encode") && i + 1 < args.length) {
         foo = Long.valueOf(args[i+1]);
-        System.out.printf("%d encodes to %s\n", foo, s = encodedId.encodeId(foo));
-        System.out.printf("%s decodes to %d\n", s, foo = encodedId.decodeId(s));
+        System.out.printf("%d encodes to %s\n", foo, s = encodedLong.encodeId(foo));
+        System.out.printf("%s decodes to %d\n", s, foo = encodedLong.decodeId(s));
       }
 
       if (arg.equals("-check") && i + 1 < args.length) {
         foo = Long.valueOf(args[i+1]);
-        encodedId.checkedEncoder(true);
-        System.out.printf("%d encodes to %s with check char.\n", foo, s = encodedId.encodeId(foo));
-        System.out.printf("%s decodes to %d with check char.\n", s, foo = encodedId.decodeId(s));
-        encodedId.checkedEncoder(false);
+        encodedLong.checkedEncoder(true);
+        System.out.printf("%d encodes to %s with check char.\n", foo, s = encodedLong.encodeId(foo));
+        System.out.printf("%s decodes to %d with check char.\n", s, foo = encodedLong.decodeId(s));
+        encodedLong.checkedEncoder(false);
       }
       i++;
     }
