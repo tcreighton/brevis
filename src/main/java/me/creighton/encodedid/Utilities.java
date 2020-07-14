@@ -1,6 +1,7 @@
 package me.creighton.encodedid;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
@@ -123,9 +124,12 @@ public class Utilities {
     msb = id.getMostSignificantBits();
     lsb = id.getLeastSignificantBits();
 
-    bId = BigInteger.valueOf(msb + (lsb < 0 ? 1 : 0))
-                    .shiftLeft(64)
-                    .add(BigInteger.valueOf(lsb));
+    ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);  // buffer for the BigInteger msb/lsb
+
+    byteBuffer.putLong(msb);
+    byteBuffer.putLong(lsb);
+
+    bId = new BigInteger(1, byteBuffer.array()); // treat msb as unsigned long (sign is positive)
 
     return bId;
   }
@@ -135,11 +139,6 @@ public class Utilities {
 // intermediate values for debug only.
     lsb = bId.longValue();
     msb = bId.shiftRight(64).longValue();
-
-    if (msb < 0) {
-      // make up for 2's complement to 1's complement:
-      msb++;
-    }
 
     UUID uuid =
         new UUID(msb, lsb);

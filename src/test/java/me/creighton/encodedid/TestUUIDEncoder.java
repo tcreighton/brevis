@@ -33,7 +33,7 @@ public class TestUUIDEncoder {
 
     UUID uuid1 = UUID.randomUUID();
     UUID uuid2;
-    long umsb, ulsb, bmsb, blsb;
+    long umsb, ulsb, bmsb, blsb, t1, t2;
 
     BigInteger b;
 
@@ -42,6 +42,10 @@ public class TestUUIDEncoder {
     umsb = uuid1.getMostSignificantBits();
     ulsb = uuid1.getLeastSignificantBits();
 
+    uuid2 = new UUID(umsb, ulsb);
+
+    assertEquals(0, uuid1.compareTo(uuid2));
+
     b = uuidToBigInteger(uuid1);
 
     bmsb = b.shiftRight(64).longValue();
@@ -49,7 +53,7 @@ public class TestUUIDEncoder {
 
     uuid2 = bigIntegerToUuid(b);
 
-//    assertEquals(0, uuid1.compareTo(uuid2));
+    assertEquals(0, uuid1.compareTo(uuid2));
 
   }
 
@@ -65,11 +69,11 @@ public class TestUUIDEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%s encodes as %s; \nwith check char as %s; decodes to \n%s\n",
-                      d.toString(), s, sc, e.toString());
+    System.out.printf("%s (len: %d) encodes as %s (len %d); \nwith check char as %s (len %d); decodes to \n%s\n",
+                      d.toString(), d.toString().length(), s, s.length(), sc, sc.length(), e.toString());
 
-//    assertEquals(d,e);
-//    assertEquals(d,c);
+    assertEquals(0, d.compareTo(e));
+    assertEquals(0, d.compareTo(c));
 
   }
 }
