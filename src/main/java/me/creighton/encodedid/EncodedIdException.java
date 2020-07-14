@@ -1,5 +1,7 @@
 package me.creighton.encodedid;
 
+import java.math.BigInteger;
+
 public class EncodedIdException extends RuntimeException {
 
   public EncodedIdException() { }
@@ -30,6 +32,10 @@ public class EncodedIdException extends RuntimeException {
   }
 
   public static void throwInvalidId (long id) throws EncodedIdException {
+    throw new EncodedIdException("id is less than 0");
+  }
+
+  public static void throwInvalidId (BigInteger id) throws EncodedIdException {
     throw new EncodedIdException("id is less than 0");
   }
 

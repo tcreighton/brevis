@@ -1,9 +1,6 @@
 package me.creighton.encodedid.impl;
 
-import me.creighton.encodedid.EncodedIdException;
-import me.creighton.encodedid.IAlphabet;
-import me.creighton.encodedid.IEncodedId;
-import me.creighton.encodedid.ILongEncoder;
+import me.creighton.encodedid.*;
 
 import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.*;
@@ -66,7 +63,7 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       throwInvalidSeparator(this.separator, alphabet);
     }
     this.alphabet = alphabet;
-    numberBase(alphabet.length());
+    numberBase(alphabet.length()); // String.length() returns int, so we can depend on it being <= Integer.MAX_VALUE.
   }
 
   @Override
@@ -337,6 +334,15 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
     public ILongEncoder buildLongEncoder () {
       return new LongEncoder(this);
     }
+
+    public IBigIntegerEncoder buildBigIntegerEncoder() {
+      return new BigIntegerEncoder(this);
+    }
+
+    public IUuidEncoder buildUuidEncoder () {
+      return new UuidEncoder(this);
+    }
+
   }
 
 

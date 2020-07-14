@@ -37,7 +37,11 @@ public interface IAlphabet {
 
   String BASE_DEFAULT_CHARACTER_SET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
   String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
-  String BASE_BIG_CHARACTER_SET = "!.0123456789:;ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~";
-  String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.!~;_:"; // scrambled LEGAL_URI_ALPHABET
+  String BASE_BIG_CHARACTER_SET = "!$&'()*.0123456789:;=ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+  String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.!;_:&$'()*="; // scrambled LEGAL_URI_ALPHABET
+
+  /** Reserved characters **/
+  char NEGATIVE_SIGN = '~';
+  char DEFAULT_SEPARATOR = '-';
 
 }

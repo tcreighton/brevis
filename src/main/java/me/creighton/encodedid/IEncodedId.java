@@ -8,7 +8,6 @@ import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
 public interface IEncodedId {
 
   // Default configuration constants
-  char DEFAULT_SEPARATOR = '-';
   int DEFAULT_SEGMENT_LENGTH = 4; // somewhat arbitrary
   int MIN_SEGMENT_LENGTH = 2; // somewhat arbitrary
   int MAX_SEGMENT_LENGTH = 8; // somewhat arbitrary
@@ -59,6 +58,8 @@ public interface IEncodedId {
     Builder segmentLength(int segmentLength);
 
     ILongEncoder buildLongEncoder();
+    IBigIntegerEncoder buildBigIntegerEncoder();
+    IUuidEncoder buildUuidEncoder ();
   }
 
 

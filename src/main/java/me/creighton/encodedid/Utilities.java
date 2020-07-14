@@ -1,5 +1,6 @@
 package me.creighton.encodedid;
 
+import java.math.BigInteger;
 import java.util.*;
 
 import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
@@ -84,6 +85,66 @@ public class Utilities {
       sb.append(c);
     }
     return sb.toString();
+  }
+
+  public static long byteArrayToLong (byte [] b) {
+    long l =
+            ((long) b[7]  << 56)
+          | ((long) b[6]  & 0xff) << 48
+          | ((long) b[5]  & 0xff) << 40
+          | ((long) b[4]  & 0xff) << 32
+          | ((long) b[3]  & 0xff) << 24
+          | ((long) b[2]  & 0xff) << 16
+          | ((long) b[1]  & 0xff) << 8
+          | ((long) b[0]  & 0xff);
+
+    return l;
+  }
+
+  public static long longToByteArray (long l) {
+    byte b[] = new byte[] {
+        (byte)  l,
+        (byte)  (l >> 8),
+        (byte)  (l >> 16),
+        (byte)  (l >> 24),
+        (byte)  (l >> 32),
+        (byte)  (l >> 40),
+        (byte)  (l >> 48),
+        (byte)  (l >> 56)
+    };
+
+    return l;
+  }
+
+  public static BigInteger uuidToBigInteger (UUID id) {
+    BigInteger bId = BigInteger.ZERO;
+    long msb, lsb;  // most significant bits, least significant bits.
+
+    msb = id.getMostSignificantBits();
+    lsb = id.getLeastSignificantBits();
+
+    bId = BigInteger.valueOf(msb + (lsb < 0 ? 1 : 0))
+                    .shiftLeft(64)
+                    .add(BigInteger.valueOf(lsb));
+
+    return bId;
+  }
+
+  public static UUID bigIntegerToUuid (BigInteger bId) {
+    long msb, lsb;
+// intermediate values for debug only.
+    lsb = bId.longValue();
+    msb = bId.shiftRight(64).longValue();
+
+    if (msb < 0) {
+      // make up for 2's complement to 1's complement:
+      msb++;
+    }
+
+    UUID uuid =
+        new UUID(msb, lsb);
+
+    return uuid;
   }
 
 }

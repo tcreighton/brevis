@@ -1,23 +1,31 @@
 package me.creighton.encodedid.impl;
 
-import me.creighton.encodedid.EncodedIdException;
-import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.*;
+import me.creighton.encodedid.EncodedIdException;
+import me.creighton.encodedid.IBigIntegerEncoder;
 
-public class LongEncoder extends EncodedId implements ILongEncoder {
+import java.math.BigInteger;
+
+public class BigIntegerEncoder extends EncodedId implements IBigIntegerEncoder {
+
 
   // Public Constructors
 
-  public LongEncoder (EncodedId.Builder builder) {
+  public BigIntegerEncoder (EncodedId.Builder builder) {
     super(builder);
   }
 
+  // Getter overrides
+
+  protected BigInteger bigNumberBase () {
+    return BigInteger.valueOf(numberBase());
+  }
 
   // Public Work Methods
 
   @Override
-  public String encodeId (long id) throws EncodedIdException {
+  public String encodeId (BigInteger id) throws EncodedIdException {
 
     String s = encodeIdWithoutSeparator(id);
 
@@ -25,24 +33,24 @@ public class LongEncoder extends EncodedId implements ILongEncoder {
   }
 
   @Override
-  public String encodeIdWithoutSeparator (long id) throws EncodedIdException {
+  public String encodeIdWithoutSeparator (BigInteger id) throws EncodedIdException {
 
     StringBuilder eId = new StringBuilder();
     int nextVal = 0;
     int countPads = 0;
-    boolean isNegative = (id < 0);
+    boolean isNegative = (id.compareTo(BigInteger.ZERO) < 0);
 
     if (isNegative) {
-      id *= -1; // encode the positive & track the sign; ie. signed magnitude
+      id = id.abs(); // equivalent in this case to id *= -1
     }
 
-    if (0 == id) {
+    if (id.equals(BigInteger.ZERO)) {
       eId.append(encodeValue(0));       // encode that value
     }
-    while (id > 0) {
-      nextVal = (int) (id % numberBase()); // grab next value to encode
-      id /= numberBase();                  // reduce the source by one value size
-      eId.append(encodeValue(nextVal));       // encode that value
+    while (id.compareTo(BigInteger.ZERO) > 0) {
+      nextVal = id.mod(bigNumberBase()).intValue(); // grab next value to encode - always int
+      id = id.divide(bigNumberBase());              // reduce the source by one value size
+      eId.append(encodeValue(nextVal));             // encode that value
     }
 
     // Next we need to pad to the min size. Remember that we are building this in reverse.
@@ -77,14 +85,16 @@ public class LongEncoder extends EncodedId implements ILongEncoder {
   }
 
   @Override
-  public long decodeId(String encodedId) throws EncodedIdException {
-    long id = (null == encodedId || encodedId.length() == 0) ? -1 : 0;
+  public BigInteger decodeId(String encodedId) throws EncodedIdException {
+    BigInteger id = ( null == encodedId || encodedId.length() == 0) ?
+                      BigInteger.valueOf(-1) :
+                      BigInteger.ZERO;
     int nextVal;
     boolean isNegative = false; // assume positive id
 
     String s = encodedId;
 
-    if (-1 == id) {
+    if (id.compareTo(BigInteger.ZERO) < 0) {
       // Invalid encodedId
       throwInvalidCharacter(' '); // Not really a space - null length or null
       // Never returns to here
@@ -97,12 +107,12 @@ public class LongEncoder extends EncodedId implements ILongEncoder {
     // At this point we have an encoded string with no separators
     // Note that 0 == id at this point
 
+
     // Now check for the negative sign.
     if(s.charAt(0) == NEGATIVE_SIGN) {
       isNegative = true;
       s = s.substring(1); // trim the negative sign
     }
-
 
     // If isCheckedEncoder then the right-most character is the check character.
     // First validate that check character is correct, then decode a shorter length.
@@ -116,11 +126,11 @@ public class LongEncoder extends EncodedId implements ILongEncoder {
     }
 
     for (int i = 0; i < s.length(); i++) {
-      id *= numberBase();  // Shift current value in the accumulator
+      id = id.multiply(bigNumberBase());        // Shift current value in the accumulator
       nextVal = decodeChar(s.charAt(i));
-      id += nextVal;          // Add in the value of the current character.
+      id = id.add(BigInteger.valueOf(nextVal)); // Add in the value of the current character.
     }
-    return id * (isNegative ? -1 : 1);
+    return id.multiply(isNegative ? BigInteger.valueOf(-1) : BigInteger.ONE);
   }
 
 
