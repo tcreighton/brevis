@@ -15,6 +15,7 @@ public class TestUUIDEncoder {
 
   static IUuidEncoder encoder1;
   static IUuidEncoder encoder2;
+  static IUuidEncoder encoder3;
 
   @BeforeAll
   public static void init () {
@@ -26,6 +27,12 @@ public class TestUUIDEncoder {
         IEncodedId.getTightlyEncodedIdBuilder()
             .checkedEncoder(true)
             .buildUuidEncoder();
+
+    encoder3 =
+        IEncodedId.getEncodedIdBuilder()
+            .separator(true)
+            .segmentLength(8)
+            .buildUuidEncoder();
   }
 
   @Test
@@ -33,6 +40,7 @@ public class TestUUIDEncoder {
 
     UUID uuid1 = UUID.randomUUID();
     UUID uuid2;
+    UUID uuid3;
     long umsb, ulsb, bmsb, blsb, t1, t2;
 
     BigInteger b;
@@ -55,6 +63,12 @@ public class TestUUIDEncoder {
 
     assertEquals(0, uuid1.compareTo(uuid2));
 
+
+    uuid3 = UUID.randomUUID();
+
+    String s = encoder3.encodeId(uuid3);
+
+    System.out.printf("Using standard encoding, UUID %s (len: %d)\nencodes as %s (len: %d)\n", uuid3.toString(), uuid3.toString().length(), s, s.length());
   }
 
   @Test

@@ -10,7 +10,6 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
 
   private char separator = DEFAULT_SEPARATOR;
   private String alphabet = DEFAULT_ALPHABET;
-//  private String characterSet = BASE_DEFAULT_CHARACTER_SET;
   private boolean useSeparator = false;
   private int padWidth = 0;
   private int segmentLength = DEFAULT_SEGMENT_LENGTH;
@@ -272,7 +271,7 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
     private boolean checkedEncoder = false;
     private char separator = '-';
     private boolean useSeparator = false;
-    private int segmentLength = MIN_SEGMENT_LENGTH;
+    private int segmentLength = DEFAULT_SEGMENT_LENGTH;
     private int padWidth = 0;
 
     public Builder () {
