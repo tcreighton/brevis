@@ -1,15 +1,15 @@
 package me.creighton.encodedid.impl;
 
 import me.creighton.encodedid.EncodedIdException;
+import me.creighton.encodedid.IEncodedId;
 import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.*;
 
 public class LongEncoder extends EncodedId implements ILongEncoder {
 
-  // Public Constructors
 
-  public LongEncoder (EncodedId.Builder builder) {
+  public LongEncoder(IEncodedId.Builder builder) {
     super(builder);
   }
 

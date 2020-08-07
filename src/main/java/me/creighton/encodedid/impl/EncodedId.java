@@ -19,13 +19,13 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
 
   // Constructors
 
-  public EncodedId (Builder builder) throws EncodedIdException {
-    this.alphabet(builder.alphabet, builder.characterSet);
-    this.separator(builder.separator);
-    this.useSeparator(builder.useSeparator);
-    this.segmentLength(builder.segmentLength);
-    this.checkedEncoder(builder.checkedEncoder);
-    this.padWidth(builder.padWidth);
+  public EncodedId (IEncodedId.Builder builder) throws EncodedIdException {
+    this.alphabet(builder.getAlphabet(), builder.getCharacterSet());
+    this.separator(builder.getSeparator());
+    this.useSeparator(builder.useSeparator());
+    this.segmentLength(builder.getSegmentLength());
+    this.checkedEncoder(builder.isCheckedEncoder());
+    this.padWidth(builder.getPadWidth());
   }
 
   // Public Getters/Setters
@@ -282,7 +282,11 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       this.alphabet(alphabet, characterSet);
     }
 
-    public IEncodedId.Builder alphabet(String alphabet, String characterSet) {
+    public Builder (String alphabet) {
+      this.alphabet(alphabet, alphabet);  // trivial checks.
+    }
+
+    public Builder alphabet(String alphabet, String characterSet) {
       this.alphabet = alphabet;
       this.characterSet = characterSet;
 
@@ -292,7 +296,15 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
-    public IEncodedId.Builder separator (char separator) {
+    public String getAlphabet () {
+      return this.alphabet;
+    }
+
+    public String getCharacterSet () {
+      return this.characterSet;
+    }
+
+    public Builder separator (char separator) {
       this.separator = separator;
 
       if (! isValidSeparator(separator, this.alphabet)) {
@@ -301,7 +313,11 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
-    public IEncodedId.Builder separator(boolean separator) {
+    public char getSeparator () {
+      return this.separator;
+    }
+
+    public Builder separator(boolean separator) {
       this.useSeparator = separator;
 
       if (separator && ! isValidSeparator(this.separator, this.alphabet)) {
@@ -310,7 +326,11 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
-    public IEncodedId.Builder segmentLength(int segmentLength) {
+    public boolean useSeparator () {
+      return this.useSeparator;
+    }
+
+    public Builder segmentLength(int segmentLength) {
       this.segmentLength = segmentLength;
 
       if (segmentLength < MIN_SEGMENT_LENGTH || segmentLength > MAX_SEGMENT_LENGTH) {
@@ -320,26 +340,26 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
-    public IEncodedId.Builder checkedEncoder(boolean checkedEncoder) {
+    public int getSegmentLength () {
+      return this.segmentLength;
+    }
+
+    public Builder checkedEncoder(boolean checkedEncoder) {
       this.checkedEncoder = checkedEncoder;
       return this;
     }
 
-    public IEncodedId.Builder padWidth (int padWidth) {
+    public boolean isCheckedEncoder () {
+      return this.checkedEncoder;
+    }
+
+    public Builder padWidth (int padWidth) {
       this.padWidth = padWidth;
       return this;
     }
 
-    public ILongEncoder buildLongEncoder () {
-      return new LongEncoder(this);
-    }
-
-    public IBigIntegerEncoder buildBigIntegerEncoder() {
-      return new BigIntegerEncoder(this);
-    }
-
-    public IUuidEncoder buildUuidEncoder () {
-      return new UuidEncoder(this);
+    public int getPadWidth () {
+      return this.padWidth;
     }
 
   }

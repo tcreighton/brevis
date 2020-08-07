@@ -20,19 +20,22 @@ public class TestUUIDEncoder {
   @BeforeAll
   public static void init () {
     encoder1 =
-        IEncodedId.getTightlyEncodedIdBuilder()
-            .buildUuidEncoder();
+        IUuidEncoder.build(
+            IEncodedId.getEncodedIdBuilder()
+        );
 
     encoder2 =
-        IEncodedId.getTightlyEncodedIdBuilder()
+        IUuidEncoder.build(
+            IEncodedId.getTightlyEncodedIdBuilder()
             .checkedEncoder(true)
-            .buildUuidEncoder();
+        );
 
     encoder3 =
-        IEncodedId.getEncodedIdBuilder()
+        IUuidEncoder.build(
+            IEncodedId.getEncodedIdBuilder()
             .separator(true)
             .segmentLength(8)
-            .buildUuidEncoder();
+        );
   }
 
   @Test

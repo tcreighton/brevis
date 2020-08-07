@@ -32,11 +32,11 @@ public class EncodedIdException extends RuntimeException {
   }
 
   public static void throwInvalidId (long id) throws EncodedIdException {
-    throw new EncodedIdException("id is less than 0");
+    throw new EncodedIdException("Invalid id for encoding: " + id);
   }
 
   public static void throwInvalidId (BigInteger id) throws EncodedIdException {
-    throw new EncodedIdException("id is less than 0");
+    throw new EncodedIdException("Invalid id for encoding: " + id);
   }
 
   public static void throwInvalidEncodingValue (int i) throws EncodedIdException {

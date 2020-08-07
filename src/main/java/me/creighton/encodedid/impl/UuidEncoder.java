@@ -1,12 +1,12 @@
 package me.creighton.encodedid.impl;
 
 import me.creighton.encodedid.EncodedIdException;
+import me.creighton.encodedid.IEncodedId;
 import me.creighton.encodedid.IUuidEncoder;
 
 import java.math.BigInteger;
 import java.util.UUID;
 
-import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.bigIntegerToUuid;
 import static me.creighton.encodedid.Utilities.uuidToBigInteger;
 
@@ -28,7 +28,7 @@ public class UuidEncoder extends EncodedId implements IUuidEncoder {
 
   // Public Constructors
 
-  public UuidEncoder (EncodedId.Builder builder) {
+  public UuidEncoder (IEncodedId.Builder builder) {
     super(builder);
     this.bigIntegerEncoder = new BigIntegerEncoder(builder);
   }

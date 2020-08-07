@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
 
 import static me.creighton.encodedid.IAlphabet.*;
-import static me.creighton.encodedid.Utilities.unscramble;
+import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
+import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestBigIntegerEncoder {
 
@@ -31,20 +31,20 @@ public class TestBigIntegerEncoder {
   @BeforeAll
   static void init () {
 
-    encoder1 = IEncodedId.getEncodedIdBuilder()
-        .buildBigIntegerEncoder();
-    encoder2 = IEncodedId.getEncodedIdBuilder()
-        .checkedEncoder(true)
-        .buildBigIntegerEncoder();
-    encoder3 = IEncodedId.getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
-        .separator(false)
-        .padWidth(0)
-        .buildBigIntegerEncoder();
-    encoder4 = IEncodedId.getTightlyEncodedIdBuilder()
-        .buildBigIntegerEncoder();
-    encoder5 = IEncodedId.getTightlyEncodedIdBuilder()
-        .checkedEncoder(true)
-        .buildBigIntegerEncoder();
+    encoder1 = IBigIntegerEncoder.build(
+                getEncodedIdBuilder());
+    encoder2 = IBigIntegerEncoder.build(
+                getEncodedIdBuilder()
+                .checkedEncoder(true));
+    encoder3 = IBigIntegerEncoder.build(
+                getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
+                .separator(false)
+                .padWidth(0));
+    encoder4 = IBigIntegerEncoder.build(
+                getTightlyEncodedIdBuilder());
+    encoder5 = IBigIntegerEncoder.build(
+                getTightlyEncodedIdBuilder()
+                .checkedEncoder(true));
   }
 
   @Test

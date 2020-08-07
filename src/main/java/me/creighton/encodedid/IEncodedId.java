@@ -34,6 +34,10 @@ public interface IEncodedId {
     return new EncodedId.Builder();
   }
 
+  static Builder getEncodedIdBuilder (String alphabet) {
+    return new EncodedId.Builder(alphabet);
+  }
+
   static Builder getEncodedIdBuilder(String alphabet, String characterSet) {
     return new EncodedId.Builder(alphabet, characterSet);
   }
@@ -51,15 +55,18 @@ public interface IEncodedId {
   interface Builder {
 
     Builder alphabet(String alphabet, String characterSet);
+    String getAlphabet();
+    String getCharacterSet();
     Builder checkedEncoder(boolean checkedEncoder);
+    boolean isCheckedEncoder();
     Builder padWidth(int padWidth);
+    int getPadWidth();
     Builder separator(char separator);
+    char getSeparator();
     Builder separator(boolean separator);
+    boolean useSeparator();
     Builder segmentLength(int segmentLength);
-
-    ILongEncoder buildLongEncoder();
-    IBigIntegerEncoder buildBigIntegerEncoder();
-    IUuidEncoder buildUuidEncoder ();
+    int getSegmentLength();
   }
 
 

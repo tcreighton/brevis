@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
+import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
 import static me.creighton.encodedid.Utilities.unscramble;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,20 +30,19 @@ public class TestLongEncoder {
   @BeforeAll
   static void init () {
 
-    encoder1 = IEncodedId.getEncodedIdBuilder()
-                .buildLongEncoder();
-    encoder2 = IEncodedId.getEncodedIdBuilder()
-                .checkedEncoder(true)
-                .buildLongEncoder();
-    encoder3 = IEncodedId.getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
+    encoder1 = ILongEncoder.build(getEncodedIdBuilder());
+    encoder2 = ILongEncoder.build(
+                getEncodedIdBuilder()
+                .checkedEncoder(true));
+    encoder3 = ILongEncoder.build(
+                getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
                 .separator(false)
-                .padWidth(0)
-                .buildLongEncoder();
-    encoder4 = IEncodedId.getTightlyEncodedIdBuilder()
-                .buildLongEncoder();
-    encoder5 = IEncodedId.getTightlyEncodedIdBuilder()
-                .checkedEncoder(true)
-                .buildLongEncoder();
+                .padWidth(0));
+    encoder4 = ILongEncoder.build(
+                getTightlyEncodedIdBuilder());
+    encoder5 = ILongEncoder.build(
+                getTightlyEncodedIdBuilder()
+                .checkedEncoder(true));
   }
 
   @Test

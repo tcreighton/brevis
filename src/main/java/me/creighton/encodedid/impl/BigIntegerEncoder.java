@@ -4,6 +4,7 @@ package me.creighton.encodedid.impl;
 import static me.creighton.encodedid.EncodedIdException.*;
 import me.creighton.encodedid.EncodedIdException;
 import me.creighton.encodedid.IBigIntegerEncoder;
+import me.creighton.encodedid.IEncodedId;
 
 import java.math.BigInteger;
 
@@ -12,7 +13,7 @@ public class BigIntegerEncoder extends EncodedId implements IBigIntegerEncoder {
 
   // Public Constructors
 
-  public BigIntegerEncoder (EncodedId.Builder builder) {
+  public BigIntegerEncoder (IEncodedId.Builder builder) {
     super(builder);
   }
 
@@ -132,6 +133,5 @@ public class BigIntegerEncoder extends EncodedId implements IBigIntegerEncoder {
     }
     return id.multiply(isNegative ? BigInteger.valueOf(-1) : BigInteger.ONE);
   }
-
 
 }
