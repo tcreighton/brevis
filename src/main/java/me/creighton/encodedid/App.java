@@ -1,6 +1,7 @@
 package me.creighton.encodedid;
 
 import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.Utilities.*;
 
 public class App {
@@ -23,7 +24,7 @@ public class App {
 
     long foo;
     String s;
-    ILongEncoder encodedLong = IEncodedId.getEncodedIdBuilder().buildLongEncoder();
+    ILongEncoder encodedLong = ILongEncoder.build(getEncodedIdBuilder());
     int i = 0;
     for (String arg : args) {
       if (arg.equals("-stats"))
