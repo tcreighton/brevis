@@ -21,3 +21,9 @@ of an ID. One such use case is to create a compact URL.
 
 For use cases that require more validity checking, you can add a check character to any
 of the alphabets. Of course, this costs an extra character.
+
+In addition to the above use cases, we also have a few implementations (profiles) that are useful
+for cases where a validation code is needed, such as a one time password (OTP). While some of these
+could be handled by simply getting a random number of a certain size, there is the added benefit
+of obscuring exactly what the number is. Not a highly valuable benefit, but perhaps it adds some.
+In any event, it's an easy implementation.
