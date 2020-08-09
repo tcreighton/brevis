@@ -10,6 +10,14 @@ public class Utilities {
 
   // Utility methods
 
+  public static long getRandomLong (long min, long max) {
+    return (long) ((Math.random() * (max - min)) + min);
+  }
+
+  public static int getRandomInt (int min, int max) {
+    return (int) ((Math.random() * (max - min)) + min);
+  }
+
   public static boolean isUrlCharacter (char c) {
     return LEGAL_URI_CHARACTER_SET.indexOf(c) > -1;
   }

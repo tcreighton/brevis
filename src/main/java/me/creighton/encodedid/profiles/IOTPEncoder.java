@@ -5,17 +5,17 @@ public interface IOTPEncoder {
   static final String DEFAULT_ALPHABET = "4827105396";
   static final int DEFAULT_OTP_LENGTH = 6;
   static final int LONGEST_OTP_LENGTH = 19; // longest OTP length; length of largest long
-  static final int DEFAULT_OTP_MAX_CODE = 999999;
-  static final long SMALLEST_OTP_CODE = 1L;
-  static final long LARGEST_OTP_CODE  = Long.MAX_VALUE; // must match LONGEST_OTP_LENGTH
+  static final int DEFAULT_OTP_MAX_ID = 999999;
+  static final long SMALLEST_OTP_ID = 0L;
+  static final long LARGEST_OTP_ID = Long.MAX_VALUE; // must match LONGEST_OTP_LENGTH
 
   public String getAlphabet ();
   public int getOptLength ();
-  public long getSmallestOtpCode ();
-  public long getLargestOtpCode ();
+  public long getSmallestOtpId();
+  public long getLargestOtpId();
 
   public String encode ();
-  public String encode (long code);
+  public String encode (long id);
   public long decodeId (String encodedId);
 
   public static IBuilder getBuilder () {
@@ -26,10 +26,10 @@ public interface IOTPEncoder {
     int getOtpLength ();
     String getAlphabet ();
     IBuilder setAlphabet (String alphabet);
-    long getMinOtpCode ();
-    IBuilder setMinOtpCode (long minOtpCode);
-    long getMaxOtpCode ();
-    IBuilder setMaxOtpCode (long maxOtpCode);
+    long getMinOtpId();
+    IBuilder setMinOtpId(long minOtpCode);
+    long getMaxOtpId();
+    IBuilder setMaxOtpId(long maxOtpCode);
     IOTPEncoder build ();
   }
 }

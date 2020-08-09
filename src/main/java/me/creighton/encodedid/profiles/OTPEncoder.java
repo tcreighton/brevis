@@ -4,6 +4,7 @@ import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.throwInvalidId;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
+import static me.creighton.encodedid.Utilities.getRandomLong;
 
 /*
   One Time Password
@@ -13,7 +14,7 @@ public class OTPEncoder implements IOTPEncoder {
 
   /***
    * The actual limits on length of an OTP and value of an OTP code are somewhat
-   * arbitrary. The typical use case is a random number in the range 1-999999, but
+   * arbitrary. The typical use case is a random number in the range 0-999999, but
    * it could vary for specific uses. In any case, we are limiting it to the range
    * of positive, non-zero Long values.
    */
@@ -21,13 +22,13 @@ public class OTPEncoder implements IOTPEncoder {
 
   // These attributes get values strictly from the builder.
   private int otpLength;
-  private long minOtpCode;
-  private long maxOtpCode;
+  private long minOtpId;
+  private long maxOtpId;
 
   public OTPEncoder(Builder builder) {
     this.otpLength = builder.getOtpLength();
-    this.minOtpCode = builder.getMinOtpCode();
-    this.maxOtpCode = builder.getMaxOtpCode();
+    this.minOtpId = builder.getMinOtpId();
+    this.maxOtpId = builder.getMaxOtpId();
 
     this.longEncoder = ILongEncoder.build(
         getEncodedIdBuilder(builder.getAlphabet())
@@ -44,36 +45,36 @@ public class OTPEncoder implements IOTPEncoder {
     return this.otpLength;
   }
 
-  public long getSmallestOtpCode () {
-    return this.minOtpCode;
+  public long getSmallestOtpId() {
+    return this.minOtpId;
   }
 
-  public long getLargestOtpCode () {
-    return this.maxOtpCode;
+  public long getLargestOtpId() {
+    return this.maxOtpId;
   }
 
 
   /**
-   * Encode a random number in the range 1:maxOtpCode
+   * Encode a random number in the range 1:maxOtpId
    * @return String
    */
   @Override
   public String encode () {
-    long min = this.minOtpCode;
-    long max = (this.maxOtpCode < Long.MAX_VALUE) ? this.maxOtpCode + 1 : this.maxOtpCode;
+    long min = this.minOtpId;
+    long max = (this.maxOtpId < Long.MAX_VALUE) ? this.maxOtpId : this.maxOtpId;
 
-    long code = (long)(Math.random()*(max-min)+min);
+    long id = getRandomLong(max, min);  //
 
-    return this.encode(code);
+    return this.encode(id);
   }
 
   @Override
-  public String encode (long code) {
-    if (code < this.minOtpCode || code > this.maxOtpCode) { // Can't be <= 0 for an OTP
-      throwInvalidId(code);
+  public String encode (long id) {
+    if (id < this.minOtpId || id > this.maxOtpId) { // Can't be <= 0 for an OTP
+      throwInvalidId(id);
     }
 
-    return this.longEncoder.encodeId(code);
+    return this.longEncoder.encodeId(id);
   }
 
   @Override
@@ -81,16 +82,16 @@ public class OTPEncoder implements IOTPEncoder {
     return this.longEncoder.decodeId(encodedId);
   }
 
-  static class Builder implements IBuilder {
+  static class Builder implements IOTPEncoder.IBuilder {
     private int otpLength;
-    private long minOtpCode;
-    private long maxOtpCode;
+    private long minOtpId;
+    private long maxOtpId;
     private String alphabet;
 
     public Builder () {
       setAlphabet(DEFAULT_ALPHABET);
-      setMinOtpCode(SMALLEST_OTP_CODE);
-      setMaxOtpCode(DEFAULT_OTP_MAX_CODE);
+      setMinOtpId(SMALLEST_OTP_ID);
+      setMaxOtpId(DEFAULT_OTP_MAX_ID);
     }
 
     public int getOtpLength () {
@@ -114,29 +115,29 @@ public class OTPEncoder implements IOTPEncoder {
       return this;
     }
 
-    public long getMinOtpCode () {
-      return this.minOtpCode;
+    public long getMinOtpId() {
+      return this.minOtpId;
     }
 
-    public IBuilder setMinOtpCode (long minOtpCode) {
-      this.minOtpCode = (minOtpCode > 0 && minOtpCode <= LARGEST_OTP_CODE) ?
-                          minOtpCode : SMALLEST_OTP_CODE;
+    public IBuilder setMinOtpId(long minOtpId) {
+      this.minOtpId = (minOtpId >= 0 && minOtpId <= LARGEST_OTP_ID) ?
+                          minOtpId : SMALLEST_OTP_ID;
 
       return this;
     }
 
-    public long getMaxOtpCode () {
-      return this.maxOtpCode;
+    public long getMaxOtpId() {
+      return this.maxOtpId;
     }
 
-    public IBuilder setMaxOtpCode (long maxOtpCode) {
-      // The maxOtpCode determines the actual max otp length
-      int len = Long.valueOf(maxOtpCode).toString().length();
+    public IBuilder setMaxOtpId(long maxOtpId) {
+      // The maxOtpId determines the actual max otp length
+      int len = Long.valueOf(maxOtpId).toString().length();
 
-      if (maxOtpCode < 9 || maxOtpCode > LARGEST_OTP_CODE)
-        throwInvalidId(maxOtpCode);
+      if (maxOtpId < 9 || maxOtpId > LARGEST_OTP_ID)
+        throwInvalidId(maxOtpId);
 
-      this.maxOtpCode = maxOtpCode;
+      this.maxOtpId = maxOtpId;
       setOtpLength(len);
       return this;
     }
