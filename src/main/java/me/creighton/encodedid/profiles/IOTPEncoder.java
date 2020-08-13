@@ -2,23 +2,23 @@ package me.creighton.encodedid.profiles;
 
 public interface IOTPEncoder {
 
-  static final String DEFAULT_ALPHABET = "4827105396";
-  static final int DEFAULT_OTP_LENGTH = 6;
-  static final int LONGEST_OTP_LENGTH = 19; // longest OTP length; length of largest long
-  static final int DEFAULT_OTP_MAX_ID = 999999;
-  static final long SMALLEST_OTP_ID = 0L;
-  static final long LARGEST_OTP_ID = Long.MAX_VALUE; // must match LONGEST_OTP_LENGTH
+  String DEFAULT_ALPHABET = "4827105396";
+  int DEFAULT_OTP_LENGTH = 6;
+  int LONGEST_OTP_LENGTH = 19; // longest OTP length; length of largest long
+  int DEFAULT_OTP_MAX_ID = 999999;
+  long SMALLEST_OTP_ID = 0L;
+  long LARGEST_OTP_ID = Long.MAX_VALUE; // must match LONGEST_OTP_LENGTH
 
-  public String getAlphabet ();
-  public int getOptLength ();
-  public long getSmallestOtpId();
-  public long getLargestOtpId();
+  String getAlphabet ();
+  int getOptLength ();
+  long getSmallestOtpId();
+  long getLargestOtpId();
 
-  public String encode ();
-  public String encode (long id);
-  public long decodeId (String encodedId);
+  String encode ();
+  String encode (long id);
+  long decodeId(String encodedId);
 
-  public static IBuilder getBuilder () {
+  static IBuilder getBuilder() {
     return new OTPEncoder.Builder();
   }
 
