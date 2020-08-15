@@ -1,6 +1,7 @@
 package me.creighton.encodedid;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 public class EncodedIdException extends RuntimeException {
 
@@ -57,6 +58,10 @@ public class EncodedIdException extends RuntimeException {
 
   public static void throwInvalidCheckCharacter (String s) throws EncodedIdException {
     throw new EncodedIdException("Invalid check character in encoding: " + s);
+  }
+
+  public static void throwInvalidTargetDate (LocalDate date) throws  EncodedIdException {
+    throw new EncodedIdException("Invalid target date for validity check: " + date);
   }
 
 }

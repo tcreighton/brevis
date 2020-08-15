@@ -1,5 +1,6 @@
 package me.creighton.encodedid;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,11 @@ public class TestBigIntegerEncoder {
     encoder5 = IBigIntegerEncoder.build(
                 getTightlyEncodedIdBuilder()
                 .checkedEncoder(true));
+  }
+
+  @AfterAll
+  public static void cleanup () {
+
   }
 
   @Test

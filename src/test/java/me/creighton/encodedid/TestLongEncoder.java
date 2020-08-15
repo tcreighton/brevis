@@ -45,6 +45,11 @@ public class TestLongEncoder {
                 .checkedEncoder(true));
   }
 
+  @AfterAll
+  public static void cleanup () {
+
+  }
+
   @Test
   public void constantsValidation () {
     String s1, s2;

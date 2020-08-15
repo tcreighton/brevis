@@ -1,5 +1,6 @@
 package me.creighton.encodedid.impl;
 
+import com.sun.xml.internal.bind.v2.runtime.output.Encoded;
 import me.creighton.encodedid.*;
 
 import static me.creighton.encodedid.EncodedIdException.*;
@@ -10,9 +11,12 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
 
   private char separator = DEFAULT_SEPARATOR;
   private String alphabet = DEFAULT_ALPHABET;
+  private String characterSet = BASE_DEFAULT_CHARACTER_SET;
   private boolean useSeparator = false;
   private int padWidth = 0;
   private int segmentLength = DEFAULT_SEGMENT_LENGTH;
+  private long minId = Long.MIN_VALUE;
+  private long maxId = Long.MAX_VALUE;
 
   private int numberBase = 0;
   private boolean checkedEncoder = false; // Default is to not use check characters.
@@ -26,6 +30,8 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
     this.segmentLength(builder.getSegmentLength());
     this.checkedEncoder(builder.isCheckedEncoder());
     this.padWidth(builder.getPadWidth());
+    this.setMinId(builder.getMinId());
+    this.setMaxId(builder.getMaxId());
   }
 
   // Public Getters/Setters
@@ -63,6 +69,15 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
     }
     this.alphabet = alphabet;
     numberBase(alphabet.length()); // String.length() returns int, so we can depend on it being <= Integer.MAX_VALUE.
+  }
+
+  @Override
+  public String characterSet () {
+    return this.characterSet;
+  }
+
+  protected void setCharacterSet (String characterSet) {
+    this.characterSet = characterSet;
   }
 
   @Override
@@ -124,6 +139,30 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
   @Override
   public void checkedEncoder(boolean checkedEncoder) {
     this.checkedEncoder = checkedEncoder;
+  }
+
+  @Override
+  public long getMinId () {
+    return this.minId;
+  }
+
+  @Override
+  public long getMaxId () {
+    return this.maxId;
+  }
+
+  @Override
+  public EncodedId setMinId (long minId) {
+    this.minId = minId;
+
+    return this;
+  }
+
+  @Override
+  public EncodedId setMaxId (long maxId) {
+    this.maxId = maxId;
+
+    return this;
   }
 
   // Non-public methods
@@ -273,6 +312,9 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
     private boolean useSeparator = false;
     private int segmentLength = DEFAULT_SEGMENT_LENGTH;
     private int padWidth = 0;
+    private long minId = Long.MIN_VALUE;
+    private long maxId = Long.MAX_VALUE;
+
 
     public Builder () {
       this(DEFAULT_ALPHABET, BASE_DEFAULT_CHARACTER_SET);
@@ -286,6 +328,7 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       this.alphabet(alphabet, alphabet);  // trivial checks.
     }
 
+    @Override
     public Builder alphabet(String alphabet, String characterSet) {
       this.alphabet = alphabet;
       this.characterSet = characterSet;
@@ -296,14 +339,17 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
+    @Override
     public String getAlphabet () {
       return this.alphabet;
     }
 
+    @Override
     public String getCharacterSet () {
       return this.characterSet;
     }
 
+    @Override
     public Builder separator (char separator) {
       this.separator = separator;
 
@@ -313,10 +359,12 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
+    @Override
     public char getSeparator () {
       return this.separator;
     }
 
+    @Override
     public Builder separator(boolean separator) {
       this.useSeparator = separator;
 
@@ -326,10 +374,12 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
+    @Override
     public boolean useSeparator () {
       return this.useSeparator;
     }
 
+    @Override
     public Builder segmentLength(int segmentLength) {
       this.segmentLength = segmentLength;
 
@@ -340,28 +390,52 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
       return this;
     }
 
+    @Override
     public int getSegmentLength () {
       return this.segmentLength;
     }
 
+    @Override
     public Builder checkedEncoder(boolean checkedEncoder) {
       this.checkedEncoder = checkedEncoder;
       return this;
     }
 
+    @Override
     public boolean isCheckedEncoder () {
       return this.checkedEncoder;
     }
 
+    @Override
     public Builder padWidth (int padWidth) {
       this.padWidth = padWidth;
       return this;
     }
 
+    @Override
     public int getPadWidth () {
       return this.padWidth;
     }
 
+    @Override
+    public long getMinId () { return this.minId; }
+
+    @Override
+    public long getMaxId () { return this.maxId; }
+
+    @Override
+    public Builder setMinId (long minId) {
+      this.minId = minId;
+
+      return this;
+    }
+
+    @Override
+    public Builder setMaxId (long maxId) {
+      this.maxId = maxId;
+
+      return this;
+    }
   }
 
 

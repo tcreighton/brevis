@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestSplitOTP {
+public class TestSplitOTPEncoder {
 
   static ISplitOTPEncoder encoder1; // All defaults
 

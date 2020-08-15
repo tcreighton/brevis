@@ -1,5 +1,6 @@
 package me.creighton.encodedid;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,11 @@ public class TestUUIDEncoder {
             .separator(true)
             .segmentLength(8)
         );
+  }
+
+  @AfterAll
+  public static void cleanup () {
+
   }
 
   @Test

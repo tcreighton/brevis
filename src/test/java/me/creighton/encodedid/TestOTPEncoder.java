@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestOTP {
+public class TestOTPEncoder {
 
   static IOTPEncoder encoder1; // All defaults
   static IOTPEncoder encoder2;

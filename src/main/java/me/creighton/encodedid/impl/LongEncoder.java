@@ -5,6 +5,7 @@ import me.creighton.encodedid.IEncodedId;
 import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.*;
+import static me.creighton.encodedid.Utilities.getRandomLong;
 
 public class LongEncoder extends EncodedId implements ILongEncoder {
 
@@ -15,6 +16,15 @@ public class LongEncoder extends EncodedId implements ILongEncoder {
 
 
   // Public Work Methods
+
+  // Selects a random number between minId and maxId, inclusive.
+  @Override
+  public String encodeId () throws EncodedIdException {
+    long max = Long.MAX_VALUE > getMaxId() ? getMaxId() + 1 : Long.MAX_VALUE;
+    long id = getRandomLong(getMinId(), max);
+
+    return encodeId(id);
+  }
 
   @Override
   public String encodeId (long id) throws EncodedIdException {

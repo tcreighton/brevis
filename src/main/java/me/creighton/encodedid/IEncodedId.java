@@ -19,6 +19,7 @@ public interface IEncodedId {
   void separator(char separator);
   String alphabet();
   void alphabet(String alphabet, String characterSet) throws EncodedIdException;
+  String characterSet ();
   boolean useSeparator();
   void useSeparator(boolean useSeparator);
   int padWidth();
@@ -27,6 +28,10 @@ public interface IEncodedId {
   void segmentLength(int segmentLength) throws EncodedIdException;
   boolean checkedEncoder(); // Indicates if this instance of IEncodedId requires check characters.
   void checkedEncoder(boolean checkedEncoder);
+  long getMinId ();
+  long getMaxId ();
+  IEncodedId setMinId (long minId);
+  IEncodedId setMaxId (long maxId);
 
   // Public builders for building various types of IEncodedId.
 
@@ -67,6 +72,10 @@ public interface IEncodedId {
     boolean useSeparator();
     Builder segmentLength(int segmentLength);
     int getSegmentLength();
+    long getMinId ();
+    Builder setMinId (long minId);
+    long getMaxId ();
+    Builder setMaxId (long maxId);
   }
 
 
