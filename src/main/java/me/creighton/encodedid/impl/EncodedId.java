@@ -1,6 +1,5 @@
 package me.creighton.encodedid.impl;
 
-import com.sun.xml.internal.bind.v2.runtime.output.Encoded;
 import me.creighton.encodedid.*;
 
 import static me.creighton.encodedid.EncodedIdException.*;
