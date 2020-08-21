@@ -14,7 +14,7 @@ public interface IEncodedId {
   int DEFAULT_PAD_LENGTH = 7; // By default we show XXXX-YYY
   int MAX_PAD_LENGTH = 30;  // max number of encoded characters to pad with 0.
 
-  // Attribute getters/setters - factory constructors will handle most cases.
+  // Attribute getters/setters
   char separator();
   void separator(char separator);
   String alphabet();

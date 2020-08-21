@@ -81,31 +81,59 @@ public class TestVerificationEncoder {
     encoding1 = encoder1.encode(id, daysValid);
     verifier = encoder1.decode(encoding1);
 
-    System.out.printf("Verifier: 0x%X, %s; Encoding1: %s\n",
+    System.out.printf("Using alphabet: %s.\n", encoder1.getAlphabet());
+    System.out.printf("Largest id: 0x%X, validation date: %s; Encoding1: %s\n",
         verifier.getId(), verifier.getValidationDate().toString(), encoding1);
-    System.out.printf("Alphabet: %s. CharacterSet: %s.\n", encoder1.getAlphabet(), encoder1.getCharacterSet());
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
+    System.out.printf("\nThe next three are using the following alphabet: %s\n", encoder2.getAlphabet());
     String encoding2;
+    id = encoder2.getMinId();
+    encoding2 = encoder2.encode(id, 3); // 3 days validity
+    verifier = encoder2.decode(encoding2);
+
+    System.out.printf("minId: 0x%X, validation date: %s; Encoding2: %s\n",
+        verifier.getId(), verifier.getValidationDate().toString(), encoding2);
+    assertEquals(id, verifier.getId());
+    assertTrue(verifier.isValid());
+
+    id = encoder2.getMaxId();
+    encoding2 = encoder2.encode(id, 3); // 3 days validity
+    verifier = encoder2.decode(encoding2);
+
+    System.out.printf("maxId: 0x%X, validation date: %s; Encoding2: %s\n",
+        verifier.getId(), verifier.getValidationDate().toString(), encoding2);
+    assertEquals(id, verifier.getId());
+    assertTrue(verifier.isValid());
+
     id = encoder2.getRandomId();
     encoding2 = encoder2.encode(id, 3); // 3 days validity
     verifier = encoder2.decode(encoding2);
 
-    System.out.printf("Verifier: 0x%X, %s; Encoding2: %s\n",
+    System.out.printf("random id: 0x%X, validation date: %s; Encoding2: %s\n",
         verifier.getId(), verifier.getValidationDate().toString(), encoding2);
-    System.out.printf("Alphabet: %s.\n", encoder2.getAlphabet());
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
     String encoding3;
+    System.out.printf("\nNow using Alphabet: %s.\n", encoder3.getAlphabet());
+
+    id = encoder3.getMaxId();
+    encoding3 = encoder3.encode(id, 3); // 3 days validity
+    verifier = encoder3.decode(encoding3);
+
+    System.out.printf("maxId: 0x%X, validation date: %s; Encoding3: %s\n",
+        verifier.getId(), verifier.getValidationDate().toString(), encoding3);
+    assertEquals(id, verifier.getId());
+    assertTrue(verifier.isValid());
+
     id = encoder3.getRandomId();
     encoding3 = encoder3.encode(id, 3); // 3 days validity
     verifier = encoder3.decode(encoding3);
 
-    System.out.printf("Verifier: 0x%X, %s; Encoding2: %s\n",
+    System.out.printf("random id: 0x%X, validation date: %s; Encoding3: %s\n",
         verifier.getId(), verifier.getValidationDate().toString(), encoding3);
-    System.out.printf("Alphabet: %s.\n", encoder3.getAlphabet());
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
