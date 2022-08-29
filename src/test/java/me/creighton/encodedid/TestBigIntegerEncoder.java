@@ -3,13 +3,13 @@ package me.creighton.encodedid;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigInteger;
 
 import static me.creighton.encodedid.IAlphabet.*;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestBigIntegerEncoder {
 
@@ -62,6 +62,15 @@ public class TestBigIntegerEncoder {
     String e_checked_neg_5M = encoder2.encodeId(idNegative5Million);
     String e_neg_1000MaxLong = encoder1.encodeId(idNegative1000MaxLong);
 
+    BigInteger bThousand        = BigInteger.valueOf(1000);
+    BigInteger bTenThousand     = BigInteger.valueOf(10 * 1000);
+    BigInteger bHundredThousand = BigInteger.valueOf(100 * 1000);
+    BigInteger bMillion         = BigInteger.valueOf(1000L * 1000L);
+    BigInteger bBillion         = BigInteger.valueOf(1000L * 1000L * 1000L);
+    BigInteger bTrillion        = BigInteger.valueOf(1000L * 1000L * 1000L * 1000L);
+    BigInteger longMaxTimes1000 = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(1000));
+
+
     String s, sc;
 
     System.out.println(id0x00 + " encodes as " + e_id0x00);
@@ -99,7 +108,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(1000);
+    d = bThousand;
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -108,7 +117,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(10000);
+    d = bTenThousand;
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -117,7 +126,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(100000);
+    d = bHundredThousand;
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -126,7 +135,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(1 * 1000 * 1000);  // 1 million
+    d = bMillion;  // 1 million
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -135,7 +144,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = d.multiply(BigInteger.valueOf(1000)); // 1 billion
+    d = bBillion; // 1 billion
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -144,7 +153,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = d.multiply(BigInteger.valueOf(1000)); // 1 trillion
+    d = bTrillion; // 1 trillion
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
@@ -162,7 +171,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(1000));
+    d = longMaxTimes1000;
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
@@ -196,7 +205,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(1000);
+    d = bThousand;
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -206,7 +215,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(10000);
+    d = bTenThousand;
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -216,7 +225,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(100000);
+    d = bHundredThousand;
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -226,7 +235,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(1 * 1000 * 1000);  // 1 million
+    d = bMillion;  // 1 million
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -236,7 +245,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = d.multiply(BigInteger.valueOf(1000)); // 1 billion
+    d = bBillion; // 1 billion
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -246,7 +255,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d.multiply(BigInteger.valueOf(1000)); // 1 trillion
+    d = bTrillion; // 1 trillion
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
@@ -265,7 +274,7 @@ public class TestBigIntegerEncoder {
     assertEquals(d,e);
     assertEquals(d,c);
 
-    d = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(1000));
+    d = longMaxTimes1000;
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
@@ -276,7 +285,7 @@ public class TestBigIntegerEncoder {
 
 
     try {
-      d = BigInteger.valueOf(1000000000000L);
+      d = bTrillion;
       s = encoder2.encodeId(d);
       e = encoder2.decodeId("DYB2-C9DM-QW");
       System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
@@ -284,7 +293,7 @@ public class TestBigIntegerEncoder {
       System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
     }
     try {
-      d = BigInteger.valueOf(1000L * 1000L * 1000L * 1000L);
+      d = bTrillion;
       s = encoder5.encodeId(d);
       e = encoder5.decodeId("oxsrN185Mkz;W");
       System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
