@@ -1,9 +1,14 @@
 package me.creighton.encodedid.impl;
 
-import me.creighton.encodedid.*;
+
+import me.creighton.encodedid.EncodedIdException;
+import me.creighton.encodedid.IAlphabet;
+import me.creighton.encodedid.IEncodedId;
 
 import static me.creighton.encodedid.EncodedIdException.*;
-import static me.creighton.encodedid.Utilities.*;
+import static me.creighton.encodedid.Utilities.isValidAlphabet;
+import static me.creighton.encodedid.Utilities.isValidSeparator;
+
 
 public abstract class EncodedId implements IAlphabet, IEncodedId {
 
@@ -217,9 +222,9 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
    * the characters of an encoding and then is itself encoded and appended as the last
    * (least significant) character of the overall encoding.
    *
-   * The algorithm used is the Luhn mod N algorithm as described in Wikipedia at
+   * The algorithm used is the "Luhn" mod N algorithm as described in Wikipedia at
    * https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm.
-   * I've attemped to keep the implementation as close as reasonable to the java implementation
+   * I've attempted to keep the implementation as close as reasonable to the java implementation
    * given on the Wikipedia page. I have made some changes to accommodate integration into
    * the EncodedId class. We could probably make some efficiency gains by computing the checksum
    * while encoding or decoding, but the logic would be a bit more obscure.
@@ -227,8 +232,8 @@ public abstract class EncodedId implements IAlphabet, IEncodedId {
 
   /**
    * This function generates a check character given an encoding. Note that it assumes there
-   * are no separator characters. These MUST all be stripped prior to calling the generate
-   * or validate functions.
+   * are no separator characters. These MUST all be stripped prior to calling generateCheckCharacter
+   * or validateCheckCharacter functions.
    *
    */
   protected char generateCheckCharacter (String input) throws EncodedIdException {

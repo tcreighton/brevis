@@ -1,7 +1,7 @@
-package me.creighton.encodedid.profiles;
+package me.creighton.encodedid;
 
 
-import me.creighton.encodedid.EncodedIdException;
+import me.creighton.encodedid.profiles.VerificationEncoder;
 
 import java.time.LocalDate;
 
@@ -42,6 +42,9 @@ public interface IVerificationEncoder {
   IVerificationEncoder setMinId (long minId);
   IVerificationEncoder setMaxId (long maxId);
 
+
+  static IVerifier getVerifier () {return VerificationEncoder.getVerifier();}
+
   interface IVerifier {
     long getId ();
     IVerifier setId (long id);
@@ -51,17 +54,18 @@ public interface IVerificationEncoder {
     boolean isValid (); // Tests if the validation date is good now.
     boolean isValid (LocalDate asOfDate); // Tests validation against some other date than now
 
-    static IVerifier getVerifier () {return new VerificationEncoder.Verifier();}
+
   }
+
+  static IPacker getPacker () {return VerificationEncoder.getPacker(); }
 
   interface IPacker {
     long pack (IVerifier verifier);
     IVerifier unpack (long packedVerifier);
 
-    static IPacker getPacker () {return new VerificationEncoder.Packer (); }
   };
 
-  static IBuilder getBuilder () {return new VerificationEncoder.Builder();}
+  static IBuilder getBuilder () {return VerificationEncoder.getBuilder();}
 
   interface IBuilder {
 

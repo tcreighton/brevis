@@ -3,17 +3,18 @@ package me.creighton.encodedid;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigInteger;
 
-import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestBigIntegerEncoder {
 
-
+  static final boolean SHOW = false;
   static IBigIntegerEncoder encoder1; // All defaults
   static IBigIntegerEncoder encoder2; // All defaults + check character
   static IBigIntegerEncoder encoder3; // Big alphabet & no separators & no pad
@@ -73,29 +74,33 @@ public class TestBigIntegerEncoder {
 
     String s, sc;
 
-    System.out.println(id0x00 + " encodes as " + e_id0x00);
-    System.out.println(id1xff + " encodes as " + e_id1xff);
-    System.out.println(idNegative5 + " encodes as " + e_neg_5);
-    System.out.println((idNegative5Million + " encodes as " + e_neg_5M));
-    System.out.println((idNegative5Million + " encodes checked as " + e_checked_neg_5M));
-    System.out.println((idNegative1000MaxLong + " encodes as " + e_neg_1000MaxLong));
+    showMessage(String.format("%d encodes as %s", id0x00, e_id0x00));
+    showMessage(String.format("%d encodes as %s", id1xff, e_id1xff));
+    showMessage(String.format("%d encodes as %s", idNegative5, e_neg_5));
+    showMessage(String.format("%d encodes as %s", idNegative5Million, e_neg_5M));
+    showMessage(String.format("%d encodes checked as %s", idNegative5Million, e_checked_neg_5M));
+    showMessage(String.format("%d encodes as %s", idNegative1000MaxLong, e_neg_1000MaxLong));
 
     assertEquals(idNegative5, encoder1.decodeId(e_neg_5));
     assertEquals(idNegative5Million, encoder1.decodeId(e_neg_5M));
     assertEquals(idNegative5Million, encoder2.decodeId(e_checked_neg_5M));
     assertEquals(idNegative1000MaxLong, encoder1.decodeId(e_neg_1000MaxLong));
 
-    System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id2x80000, encoder3.encodeId(id2x80000));
-    System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id3xfffff, encoder3.encodeId(id3xfffff));
+    showMessage("\n");
+    showMessage(String.format("Big Alphabet, no pad: %d encodes as %s", id2x80000, encoder3.encodeId(id2x80000)));
+    showMessage(String.format("Big Alphabet, no pad: %d encodes as %s", id3xfffff, encoder3.encodeId(id3xfffff)));
+    showMessage("\n");
 
     BigInteger c, d, e;
-    System.out.println("\nUsing Default Alphabet");
+    showMessage("Using Default Alphabet");
+    showMessage("\n");
+
     d = BigInteger.ZERO;
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -104,7 +109,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -113,7 +118,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -122,7 +127,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -131,7 +136,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -140,7 +145,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -149,7 +154,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -158,7 +163,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -167,7 +172,7 @@ public class TestBigIntegerEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -176,22 +181,22 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
 
     // Test Tight encoding
 
-
-    System.out.println("\nUsing TightlyEncodedId:");
+    showMessage("\n");
+    showMessage("Using TightlyEncodedId:");
     d = BigInteger.ZERO;
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -201,7 +206,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -211,7 +216,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -221,7 +226,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -231,7 +236,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -241,7 +246,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -251,7 +256,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -261,7 +266,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -270,7 +275,7 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -279,28 +284,44 @@ public class TestBigIntegerEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d encodes as %s; with check char as %s; decodes to %d", d, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
+    d = bTrillion;  // test two encoders with 10^^12; test bad check char handling
+    final String tmp1, tmp2;
+    EncodedIdException thrown;
 
-    try {
-      d = bTrillion;
-      s = encoder2.encodeId(d);
-      e = encoder2.decodeId("DYB2-C9DM-QW");
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
-    } catch (EncodedIdException ex) {
-      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
-    }
-    try {
-      d = bTrillion;
-      s = encoder5.encodeId(d);
-      e = encoder5.decodeId("oxsrN185Mkz;W");
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
-    } catch (EncodedIdException ex) {
-      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
-    }
+    showMessage("\n");
+    s = encoder2.encodeId(d);
+    showMessage(String.format("Encoded 1 trillion with check char: %s", s));
+    tmp1 = "DYB2C9DMQX";  // Correct encoding is DYB2C9DMQG
+    thrown =
+            assertThrows(EncodedIdException.class, () -> {
+              encoder2.decodeId(tmp1);  // Should be: DYB2C9DMQG
+            }, "EncodedIdException error (invalid check digit) expected!!!");
+    showMessage(thrown.getMessage());
+    e = encoder2.decodeId(s);
+    assertEquals(d, e);
+    showMessage(String.format("The encoded ID, including check digit: %s We gave it %s", s, tmp1));
+
+    showMessage("\n");
+    s = encoder5.encodeId(d);
+    showMessage(String.format("Encoded 1 trillion with check char: %s", s));
+    tmp2 = "gglq&Di.";  // Correct encoding is gglq&Di;
+    thrown =
+            assertThrows(EncodedIdException.class, () -> {
+              encoder2.decodeId(tmp2);  // Should be: gglq&Di;
+            }, "EncodedIdException error (invalid check digit) expected!!!");
+    showMessage(thrown.getMessage());
+    e = encoder5.decodeId(s);
+    assertEquals(d, e);
+    showMessage(String.format("The encoded ID, including check digit: %s We gave it %s", s, tmp2));
 
   }
 
+  private void showMessage (String msg) {
+    if (SHOW)
+      System.out.printf("%s\n", msg);
+  }
 }
