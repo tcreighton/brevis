@@ -7,16 +7,18 @@ import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import static me.creighton.encodedid.IAlphabet.*;
-import static me.creighton.encodedid.Utilities.*;
+import static me.creighton.encodedid.Utilities.bigIntegerToUuid;
+import static me.creighton.encodedid.Utilities.uuidToBigInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUUIDEncoder {
 
+  static final boolean SHOW = false;
   static IUuidEncoder encoder1;
   static IUuidEncoder encoder2;
   static IUuidEncoder encoder3;
+  static IUuidEncoder encoder4;
+
 
   @BeforeAll
   public static void init () {
@@ -36,6 +38,11 @@ public class TestUUIDEncoder {
             IEncodedId.getEncodedIdBuilder()
             .separator(true)
             .segmentLength(8)
+        );
+
+    encoder4 =
+        IUuidEncoder.build(
+            IEncodedId.getTightlyEncodedIdBuilder()
         );
   }
 
@@ -77,7 +84,9 @@ public class TestUUIDEncoder {
 
     String s = encoder3.encodeId(uuid3);
 
-    System.out.printf("Using standard encoding, UUID %s (len: %d)\nencodes as %s (len: %d)\n", uuid3.toString(), uuid3.toString().length(), s, s.length());
+    showMessage("Using standard encoding:");
+    showMessage(String.format("\tUUID %s (len: %d)", uuid3.toString(), uuid3.toString().length()));
+    showMessage(String.format("\tEncodes as %s (len: %d)", s, s.length()));
   }
 
   @Test
@@ -85,18 +94,29 @@ public class TestUUIDEncoder {
     String s, sc;
     UUID c,d,e;
 
-    System.out.println("\nUsing Tightly Encoded");
+//    System.out.println("\nUsing Tightly Encoded");
     d = UUID.randomUUID();
 
-    s = encoder1.encodeId(d);
+    s = encoder4.encodeId(d);
     sc = encoder2.encodeId(d);
-    e = encoder1.decodeId(s);
+    e = encoder4.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%s (len: %d) encodes as %s (len %d); \nwith check char as %s (len %d); decodes to \n%s\n",
-                      d.toString(), d.toString().length(), s, s.length(), sc, sc.length(), e.toString());
+
+    showMessage("Using tight encoding:");
+    showMessage(String.format("\t%s (len: %d) \n\t\tencodes as \t\t\t%s (len %d)",
+            d.toString(), d.toString().length(), s, s.length()));
+    showMessage(String.format("\t\twith check char as \t%s (len %d) ",
+            sc, sc.length()));
+    showMessage(String.format("\t\tdecodes to \n\t%s", e.toString()));
 
     assertEquals(0, d.compareTo(e));
     assertEquals(0, d.compareTo(c));
 
   }
+
+  private void showMessage (String msg) {
+    if (SHOW)
+      System.out.printf("%s\n", msg);
+  }
+
 }

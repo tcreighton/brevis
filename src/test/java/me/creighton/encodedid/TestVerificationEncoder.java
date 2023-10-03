@@ -1,6 +1,5 @@
 package me.creighton.encodedid;
 
-import me.creighton.encodedid.profiles.IVerificationEncoder;
 import me.creighton.encodedid.profiles.VerificationEncoder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,12 +10,13 @@ import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
 import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
-import static me.creighton.encodedid.profiles.IVerificationEncoder.ABSOLUTE_LARGEST_ID;
-import static me.creighton.encodedid.profiles.IVerificationEncoder.ABSOLUTE_LAST_VALID_DATE;
+import static me.creighton.encodedid.IVerificationEncoder.ABSOLUTE_LARGEST_ID;
+import static me.creighton.encodedid.IVerificationEncoder.ABSOLUTE_LAST_VALID_DATE;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestVerificationEncoder {
 
+  static final boolean SHOW = false;
   static VerificationEncoder encoder1;
   static VerificationEncoder encoder2;
   static VerificationEncoder encoder3;
@@ -65,15 +65,15 @@ public class TestVerificationEncoder {
 
     assertThrows(EncodedIdException.class, () -> {
       encoder1.encode(-1L);
-    });
+    }, "Error! Exception test expected to throw on id == -1L.");
 
     assertThrows(EncodedIdException.class, () -> {
       encoder1.encode(ABSOLUTE_LARGEST_ID + 1);
-    });
+    }, "Error! Exception test expected to throw on ABSOLUTE_LARGEST_ID + 1.");
 
     assertThrows(EncodedIdException.class, () -> {
       encoder1.encode(12, ABSOLUTE_LAST_VALID_DATE.plusDays(1));
-    });
+    }, "Error! Exception test expected to throw on ABSOLUTE_LAST_VALID_DATE.plusDays(1).");
 
     id = ABSOLUTE_LARGEST_ID;
     daysValid = (int) DAYS.between(LocalDate.now(), ABSOLUTE_LAST_VALID_DATE); // < 30000 days
@@ -81,20 +81,22 @@ public class TestVerificationEncoder {
     encoding1 = encoder1.encode(id, daysValid);
     verifier = encoder1.decode(encoding1);
 
-    System.out.printf("Using alphabet: %s.\n", encoder1.getAlphabet());
-    System.out.printf("Largest id: 0x%X, validation date: %s; Encoding1: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding1);
+    showMessage(String.format("Using alphabet: %s.", encoder1.getAlphabet()));
+    showMessage(String.format("Largest id: 0x%X, validation date: %s; Encoding1: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding1));
+
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
-    System.out.printf("\nThe next three are using the following alphabet: %s\n", encoder2.getAlphabet());
+    showMessage(String.format("The next three are using the following alphabet: %s", encoder2.getAlphabet()));
+
     String encoding2;
     id = encoder2.getMinId();
     encoding2 = encoder2.encode(id, 3); // 3 days validity
     verifier = encoder2.decode(encoding2);
 
-    System.out.printf("minId: 0x%X, validation date: %s; Encoding2: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding2);
+    showMessage(String.format("minId: 0x%X, validation date: %s; Encoding2: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding2));
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
@@ -102,8 +104,8 @@ public class TestVerificationEncoder {
     encoding2 = encoder2.encode(id, 3); // 3 days validity
     verifier = encoder2.decode(encoding2);
 
-    System.out.printf("maxId: 0x%X, validation date: %s; Encoding2: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding2);
+    showMessage(String.format("maxId: 0x%X, validation date: %s; Encoding2: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding2));
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
@@ -111,20 +113,20 @@ public class TestVerificationEncoder {
     encoding2 = encoder2.encode(id, 3); // 3 days validity
     verifier = encoder2.decode(encoding2);
 
-    System.out.printf("random id: 0x%X, validation date: %s; Encoding2: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding2);
+    showMessage(String.format("random id: 0x%X, validation date: %s; Encoding2: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding2));
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
     String encoding3;
-    System.out.printf("\nNow using Alphabet: %s.\n", encoder3.getAlphabet());
+    showMessage(String.format("Now using Alphabet: %s.\n", encoder3.getAlphabet()));
 
     id = encoder3.getMaxId();
     encoding3 = encoder3.encode(id, 3); // 3 days validity
     verifier = encoder3.decode(encoding3);
 
-    System.out.printf("maxId: 0x%X, validation date: %s; Encoding3: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding3);
+    showMessage(String.format("maxId: 0x%X, validation date: %s; Encoding3: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding3));
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
@@ -132,8 +134,8 @@ public class TestVerificationEncoder {
     encoding3 = encoder3.encode(id, 3); // 3 days validity
     verifier = encoder3.decode(encoding3);
 
-    System.out.printf("random id: 0x%X, validation date: %s; Encoding3: %s\n",
-        verifier.getId(), verifier.getValidationDate().toString(), encoding3);
+    showMessage(String.format("random id: 0x%X, validation date: %s; Encoding3: %s",
+            verifier.getId(), verifier.getValidationDate().toString(), encoding3));
     assertEquals(id, verifier.getId());
     assertTrue(verifier.isValid());
 
@@ -144,8 +146,8 @@ public class TestVerificationEncoder {
   public void packingTests() {
     long packed;
     long id = 0x7F7F;
-    IVerificationEncoder.IPacker packer = IVerificationEncoder.IPacker.getPacker();
-    IVerificationEncoder.IVerifier verifier = IVerificationEncoder.IVerifier.getVerifier();// today
+    IVerificationEncoder.IPacker packer = IVerificationEncoder.getPacker();
+    IVerificationEncoder.IVerifier verifier = IVerificationEncoder.getVerifier();// today
     IVerificationEncoder.IVerifier verifier2;
 
     verifier.setValidationDate(10)
@@ -159,19 +161,19 @@ public class TestVerificationEncoder {
 
   @Test
   public void verifierTests () {
-    IVerificationEncoder.IVerifier verifier = IVerificationEncoder.IVerifier.getVerifier();
+    IVerificationEncoder.IVerifier verifier = IVerificationEncoder.getVerifier();
 
     assertThrows(EncodedIdException.class, () -> {
       verifier.setValidationDate(ABSOLUTE_LAST_VALID_DATE.plusDays(3));
-    });
+    }, "Error! Exception test expected to throw on ABSOLUTE_LAST_VALID_DATE.plusDays(3).");
 
     assertThrows(EncodedIdException.class, () -> {
       verifier.setId(-1);
-    });
+    }, "Error! Exception test expected to throw on id == -1");
 
     assertThrows(EncodedIdException.class, () -> {
       verifier.setId(ABSOLUTE_LARGEST_ID+1);
-    });
+    }, "Error! Exception test expected to throw on ABSOLUTE_LARGEST_ID+1.");
 
 
     verifier.setId(10000)
@@ -194,5 +196,10 @@ public class TestVerificationEncoder {
     verifier.setValidationDate(ABSOLUTE_LAST_VALID_DATE);
     assertTrue(verifier.isValid(ABSOLUTE_LAST_VALID_DATE));
     assertFalse(verifier.isValid(ABSOLUTE_LAST_VALID_DATE.plusDays(1)));
+  }
+
+  private void showMessage (String msg) {
+    if (SHOW)
+      System.out.printf("%s\n", msg);
   }
 }

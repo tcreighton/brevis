@@ -14,12 +14,15 @@ package me.creighton.encodedid;
 
 public interface IAlphabet {
 
-  String LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz";
-  String UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  String ALPHA = LOWER_ALPHA + UPPER_ALPHA;
-  String DIGIT = "0123456789";
-  String SPECIAL = ":._~!;"; // '-' is excluded as default separator
-  String LEGAL_URI_CHARACTER_SET = ALPHA + DIGIT + SPECIAL;
+  public final String LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz";
+  public final String UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public final String ALPHA = LOWER_ALPHA + UPPER_ALPHA;
+  public final String DIGIT = "0123456789";
+
+  public final String UNRESERVED_3986 = ALPHA + DIGIT + "-._~";
+  public final String SPECIAL = ":._~!;"; // '-' is excluded as default separator
+  public final String NOT_SAFE_FOR_URL = "?/#[]@";
+  public final String LEGAL_URI_CHARACTER_SET = ALPHA + DIGIT + SPECIAL;
 
   // The alphabets are given as constants here rather than calls to static Utilities methods
   // So they are easy to see the values and so that people can easily create new alphabets from them.
@@ -34,18 +37,20 @@ public interface IAlphabet {
   // If you create your own alphabets and want them to work in a URL,
   // check them with isUrlAlphabet.
   //
+  // This work attempts to comply with RFC 3986.
+  //
 
-  String NUMBERS = "0123456789";
-  String LOWER_CASE = "abcdefghijklmnopqrstuvwxyz";
-  String UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  String SPECIAL_CHARACTERS = "!$&'()*.:;=_";
-  String BASE_DEFAULT_CHARACTER_SET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
-  String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
-  String BASE_BIG_CHARACTER_SET = LOWER_CASE + UPPER_CASE + NUMBERS + SPECIAL_CHARACTERS;
-  String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.!;_:&$'()*="; // scrambled LEGAL_URI_ALPHABET
+  public final String NUMBERS = "0123456789";
+  public final String LOWER_CASE = "abcdefghijklmnopqrstuvwxyz";
+  public final String UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public final String SPECIAL_CHARACTERS = "!$&'()*.:;=_"; // could cause problems in some URL paths
+  public final String BASE_DEFAULT_CHARACTER_SET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
+  public final String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
+  public final String BASE_BIG_CHARACTER_SET = LOWER_CASE + UPPER_CASE + NUMBERS + SPECIAL_CHARACTERS;
+  public final String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.!;_:&$'()*="; // scrambled LEGAL_URI_ALPHABET
 
   /** Reserved characters **/
-  char NEGATIVE_SIGN = '~';
-  char DEFAULT_SEPARATOR = '-';
+  public final char NEGATIVE_SIGN = '~';
+  public final char DEFAULT_SEPARATOR = '-';
 
 }

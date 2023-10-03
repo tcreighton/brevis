@@ -13,11 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestLongEncoder {
 
+  static final boolean SHOW = false;  // change this to allow demonstration code to display messages on console.
+
   static ILongEncoder encoder1; // All defaults
   static ILongEncoder encoder2; // All defaults + check character
   static ILongEncoder encoder3; // Big alphabet & no separators & no pad
   static ILongEncoder encoder4; // TightlyEncodedId (same as encoder3)
   static ILongEncoder encoder5; // TightlyEncodedId (same as encoder3)
+  static final String ENCODES_AS = "encodes as";
 
   static final long id0x00 = 0x00;
   static final long id1xff = 0xff;
@@ -107,27 +110,28 @@ public class TestLongEncoder {
     String e_checked_neg_5M = encoder2.encodeId(idNegative5Million);
     String s, sc;
 
-    System.out.println(id0x00 + " encodes as " + e_id0x00);
-    System.out.println(id1xff + " encodes as " + e_id1xff);
-    System.out.println(idNegative5 + " encodes as " + e_neg_5);
-    System.out.println((idNegative5Million + " encodes as " + e_neg_5M));
-    System.out.println((idNegative5Million + " encodes checked as " + e_checked_neg_5M));
+
+    showMessage(String.format("%d %s %s", id0x00, ENCODES_AS, e_id0x00));
+    showMessage(String.format("%d %s %s", id1xff, ENCODES_AS, e_id1xff));
+    showMessage(String.format("%d %s %s", idNegative5, ENCODES_AS, e_neg_5));
+    showMessage(String.format("%d %s %s", idNegative5Million, ENCODES_AS, e_neg_5M));
+    showMessage(String.format("%d encodes checked as %s", idNegative5Million, e_checked_neg_5M));
 
     assertEquals(idNegative5, encoder1.decodeId(e_neg_5));
     assertEquals(idNegative5Million, encoder1.decodeId(e_neg_5M));
     assertEquals(idNegative5Million, encoder2.decodeId(e_checked_neg_5M));
 
-    System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id2x80000, encoder3.encodeId(id2x80000));
-    System.out.printf("Big Alphabet, no pad: %d encodes as %s\n", id3xfffff, encoder3.encodeId(id3xfffff));
+    showMessage(String.format("%s %d %s", "Big Alphabet, no pad:", id2x80000, encoder3.encodeId(id2x80000)));
+    showMessage(String.format("%s %d %s", "Big Alphabet, no pad:", id3xfffff, encoder3.encodeId(id3xfffff)));
 
     long c, d, e;
-    System.out.println("\nUsing Default Alphabet");
+    showMessage(String.format("%s", "Using Default Alphabet"));
     d = 0;
     s = encoder1.encodeId(d);
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -136,7 +140,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -145,7 +149,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -154,7 +158,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -163,7 +167,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -172,7 +176,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -181,7 +185,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -190,7 +194,7 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -199,22 +203,23 @@ public class TestLongEncoder {
     sc = encoder2.encodeId(d);
     e = encoder1.decodeId(s);
     c = encoder2.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
     assertEquals(d,e);
     assertEquals(d,c);
 
 
     // Test Tight encoding
 
+    showMessage(String.format("Using TightlyEncodedId"));
 
-    System.out.println("\nUsing TightlyEncodedId:");
     d = 0;
 
     s = encoder4.encodeId(d);
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -224,7 +229,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -234,7 +240,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -244,7 +251,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -254,7 +262,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -264,7 +273,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -274,7 +284,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -284,7 +295,8 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s; with check char as %s; decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
@@ -293,28 +305,40 @@ public class TestLongEncoder {
     sc = encoder5.encodeId(d);
     e = encoder4.decodeId(s);
     c = encoder5.decodeId(sc);
-    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
+    showMessage(String.format("%d %s %s with check char as %s decodes to %d", d, ENCODES_AS, s, sc, e));
+//    System.out.printf("%d encodes as %s; with check char as %s; decodes to %d\n", d, s, sc, e);
     assertEquals(d,e);
     assertEquals(d,c);
 
+    final String tmp1, tmp2;
+    EncodedIdException thrown;
 
-    try {
-      d = 1000000000000L;
-      s = encoder2.encodeId(d);
-      e = encoder2.decodeId("DYB2-C9DM-QW");
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
-    } catch (EncodedIdException ex) {
-      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
-    }
-    try {
-      d = 1000L * 1000L * 1000L * 1000L;
-      s = encoder5.encodeId(d);
-      e = encoder5.decodeId("oxsrN185Mkz;W");
-      System.out.printf("1 trillion with bad check character encodes as %s; decodes to %d\n", s, e);
-    } catch (EncodedIdException ex) {
-      System.out.printf("\n!!! Caught exception: %s", ex.getMessage());
-    }
+    s = encoder2.encodeId(d);
+    tmp1 = "KQFHHRWDYWGPC7"; // wrong check char encoding! Correct is KQFHHRWDYWGPC3
+    thrown =
+            assertThrows(EncodedIdException.class, () -> {
+              encoder2.decodeId(tmp1);  // Should be: KQFHHRWDYWGPC3
+            }, "EncodedIdException error (invalid check digit) excpected!!!");
+    showMessage(thrown.getMessage());
+    e = encoder2.decodeId(s);
+    assertEquals(d, e);
+    showMessage(String.format("The encoded ID, including check digit: %s We gave it %s", s, tmp1));
+
+    s = encoder5.encodeId(d);
+    tmp2 = "V;OeKx09cJQW";  // Should be V;OeKx09cJQP
+    thrown =
+            assertThrows(EncodedIdException.class, () -> {
+              encoder5.decodeId(tmp2);  // Should be: V;OeKx09cJQP
+            }, "EncodedIdException error (invalid check digit) excpected!!!");
+    showMessage(thrown.getMessage());
+    e = encoder5.decodeId(s);
+    assertEquals(d, e);
+    showMessage(String.format("The encoded ID, including check digit: %s. We gave it %s.", s, tmp2));
+
 
   }
-
+  private void showMessage (String msg) {
+    if (SHOW)
+      System.out.printf("%s\n", msg);
+  }
 }

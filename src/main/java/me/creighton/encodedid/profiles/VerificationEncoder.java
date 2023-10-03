@@ -3,6 +3,8 @@ package me.creighton.encodedid.profiles;
 import me.creighton.encodedid.EncodedIdException;
 import me.creighton.encodedid.IEncodedId;
 import me.creighton.encodedid.ILongEncoder;
+import me.creighton.encodedid.IVerificationEncoder;
+
 
 import java.time.LocalDate;
 
@@ -25,7 +27,7 @@ import static me.creighton.encodedid.Utilities.getRandomLong;
  * and a day count as an integer. The day count must be in the range of 0-255 and the base
  * identifier must be in the range 0-16777215 (0xFFFFFF). The rational is that we want to
  * have a relatively small number to encode so we get a short encoding even with a small
- * encoding base.
+ * encoding base (alphabet).
  *
  * Over time we may want to change the algorithm or the alphabet used. To facilitate this,
  * we implement a 'flag' character as the last (right-most) character of the encoded
@@ -157,6 +159,8 @@ public class VerificationEncoder implements IVerificationEncoder {
 
 
   //============================================
+
+  public static IVerifier getVerifier () { return new Verifier(); }
   static class Verifier implements IVerifier {
 
     private long id = 0;
@@ -256,6 +260,8 @@ public class VerificationEncoder implements IVerificationEncoder {
   protected static final long DAY_MASK = 0x1F;   // 5 bits for the day 1-31
 
   //============================================
+
+  public static IPacker getPacker () { return new Packer(); }
   static class Packer implements IPacker {
 
     @Override
@@ -292,6 +298,8 @@ public class VerificationEncoder implements IVerificationEncoder {
     }
 
   }
+
+  public static IBuilder getBuilder () { return new Builder(); }
 
   static class Builder implements IVerificationEncoder.IBuilder {
     String characterSet = BASE_DEFAULT_CHARACTER_SET;

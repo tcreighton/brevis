@@ -1,34 +1,55 @@
 package me.creighton.encodedid;
 
+import org.jetbrains.annotations.Contract;
+
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 import java.util.*;
 
 import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
 
+
 public class Utilities {
+
+  static final SecureRandom secureRandom = new SecureRandom();
+
 
   // Utility methods
 
   public static long getRandomLong (long min, long max) {
-    return (long) ((Math.random() * (max - min)) + min);
+    long l = secureRandom.nextLong(min, max);  // min is inclusive, max is exclusive!
+    return l;
   }
 
   public static int getRandomInt (int min, int max) {
-    return (int) ((Math.random() * (max - min)) + min);
+    int i = secureRandom.nextInt(min, max);  // min is inclusive, max is exclusive!
+    return i;
   }
 
+  /*
+    This tests whether a char value is valid in an alphabet based on LEGAL_URI_CHARACTER_SET.
+    It does not determine validity based on RFC 3986. The purpose is to limit characters that
+    will work well in an encoding that is to be used within a URL.
+   */
   public static boolean isUrlCharacter (char c) {
-    return LEGAL_URI_CHARACTER_SET.indexOf(c) > -1;
+    return (LEGAL_URI_CHARACTER_SET.indexOf(c) > -1);
   }
 
+  @Contract(pure = true)
   public static boolean isValidSeparator (char separator, String alphabet) {
+    if (null == alphabet) {
+      alphabet = "";    // Note that this means any separator value is valid.
+    }
     // The separator MUST NOT be in the alphabet.
 
     return alphabet.indexOf(separator) == -1;
   }
 
   public static Set<Character> stringToCharacterSet(String s) {
+    if (null == s) {
+      s = "";
+    }
     Set<Character> set = new HashSet<>();
     for (char c : s.toCharArray()) {
       set.add(c);
@@ -40,21 +61,26 @@ public class Utilities {
   public static boolean isValidAlphabet (String alphabet, String characterSet) {
     // Every character in alphabet must be in characterSet.
 
-    if (null != alphabet && null != characterSet) {
-      return stringToCharacterSet(characterSet).containsAll
-          (stringToCharacterSet(alphabet));
-    } else
-      return false;
+    if (null == alphabet) {
+      alphabet = "";
+    }
+
+    if (null == characterSet) {
+      characterSet = "";
+    }
+    return stringToCharacterSet(characterSet).containsAll
+            (stringToCharacterSet(alphabet));
   }
 
   public static boolean isValidUriAlphabet (String alphabet) {
     // The alphabet MUST contain only legal URL characters.
 
-    if (null != alphabet) {
-      return stringToCharacterSet(LEGAL_URI_CHARACTER_SET).containsAll
+    if (null == alphabet) {
+      alphabet = "";
+    }
+
+    return stringToCharacterSet(LEGAL_URI_CHARACTER_SET).containsAll
           (stringToCharacterSet(alphabet));
-    } else
-      return false;
   }
 
   // Convenience method to let you easily scramble a character string for a new alphabet.
@@ -75,7 +101,7 @@ public class Utilities {
   }
 
   /**
-   * Unscramble does not restore the String that produced the scambled String.
+   * Unscramble does not restore the String that produced the scrambled String.
    * This simply sorts the String
    * 
    * @param s is some String that was perhaps scrambled by hand or by scramble().
@@ -110,7 +136,7 @@ public class Utilities {
     return l;
   }
 
-  public static long longToByteArray (long l) {
+  public static byte [] longToByteArray (long l) {
     byte b[] = new byte[] {
         (byte)  l,
         (byte)  (l >> 8),
@@ -122,7 +148,7 @@ public class Utilities {
         (byte)  (l >> 56)
     };
 
-    return l;
+    return b;
   }
 
   public static BigInteger uuidToBigInteger (UUID id) {
