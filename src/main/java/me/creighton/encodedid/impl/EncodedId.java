@@ -2,15 +2,15 @@ package me.creighton.encodedid.impl;
 
 
 import me.creighton.encodedid.EncodedIdException;
-import me.creighton.encodedid.IAlphabet;
 import me.creighton.encodedid.IEncodedId;
 
 import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.isValidAlphabet;
 import static me.creighton.encodedid.Utilities.isValidSeparator;
+import static me.creighton.encodedid.EncodingConstants.*;
 
 
-public abstract class EncodedId implements IAlphabet, IEncodedId {
+public abstract class EncodedId implements IEncodedId {
 
 
   private char separator = DEFAULT_SEPARATOR;

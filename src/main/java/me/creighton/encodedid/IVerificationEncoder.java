@@ -2,7 +2,6 @@ package me.creighton.encodedid;
 
 
 import me.creighton.encodedid.profiles.VerificationEncoder;
-
 import java.time.LocalDate;
 
 public interface IVerificationEncoder {

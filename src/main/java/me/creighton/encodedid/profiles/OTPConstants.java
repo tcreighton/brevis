@@ -2,6 +2,9 @@ package me.creighton.encodedid.profiles;
 
 public final class OTPConstants {
 
+    private OTPConstants () {
+
+    }
     // Constants
 
     static final String DEFAULT_OTP_ALPHABET = "4827105396";

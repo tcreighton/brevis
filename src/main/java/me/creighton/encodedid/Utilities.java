@@ -7,23 +7,22 @@ import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.*;
 
-import static me.creighton.encodedid.IAlphabet.LEGAL_URI_CHARACTER_SET;
-
+import static me.creighton.encodedid.EncodingConstants.LEGAL_URI_CHARACTER_SET;
 
 public class Utilities {
 
-  static final SecureRandom secureRandom = new SecureRandom();
+  static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
 
   // Utility methods
 
   public static long getRandomLong (long min, long max) {
-    long l = secureRandom.nextLong(min, max);  // min is inclusive, max is exclusive!
+    long l = SECURE_RANDOM.nextLong(min, max);  // min is inclusive, max is exclusive!
     return l;
   }
 
   public static int getRandomInt (int min, int max) {
-    int i = secureRandom.nextInt(min, max);  // min is inclusive, max is exclusive!
+    int i = SECURE_RANDOM.nextInt(min, max);  // min is inclusive, max is exclusive!
     return i;
   }
 

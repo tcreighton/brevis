@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.*;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +39,7 @@ public class TestBigIntegerEncoder {
                 getEncodedIdBuilder()
                 .checkedEncoder(true));
     encoder3 = IBigIntegerEncoder.build(
-                getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
+                getEncodedIdBuilder(BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
                 .separator(false)
                 .padWidth(0));
     encoder4 = IBigIntegerEncoder.build(
