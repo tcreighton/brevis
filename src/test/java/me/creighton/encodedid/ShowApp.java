@@ -13,8 +13,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
-import static me.creighton.encodedid.IAlphabet.BASE_DEFAULT_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.BASE_BIG_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.BASE_DEFAULT_CHARACTER_SET;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 
 public class ShowApp {

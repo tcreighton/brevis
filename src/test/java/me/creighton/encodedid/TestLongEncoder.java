@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.EncodingConstants.*;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.IEncodedId.getTightlyEncodedIdBuilder;
 import static me.creighton.encodedid.Utilities.unscramble;
@@ -38,7 +38,7 @@ public class TestLongEncoder {
                 getEncodedIdBuilder()
                 .checkedEncoder(true));
     encoder3 = ILongEncoder.build(
-                getEncodedIdBuilder(IAlphabet.BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
+                getEncodedIdBuilder(BIG_ALPHABET, BASE_BIG_CHARACTER_SET)
                 .separator(false)
                 .padWidth(0));
     encoder4 = ILongEncoder.build(

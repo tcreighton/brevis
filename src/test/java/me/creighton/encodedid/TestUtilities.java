@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.EncodingConstants.*;
 import static me.creighton.encodedid.Utilities.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,6 +1,6 @@
 package me.creighton.encodedid;
 
-import static me.creighton.encodedid.IAlphabet.*;
+import static me.creighton.encodedid.EncodingConstants.*;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.Utilities.*;
 

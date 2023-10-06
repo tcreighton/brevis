@@ -6,6 +6,7 @@ import me.creighton.encodedid.ILongEncoder;
 
 import static me.creighton.encodedid.EncodedIdException.*;
 import static me.creighton.encodedid.Utilities.getRandomLong;
+import static me.creighton.encodedid.EncodingConstants.*;
 
 public class LongEncoder extends EncodedId implements ILongEncoder {
 

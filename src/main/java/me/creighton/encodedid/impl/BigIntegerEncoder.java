@@ -1,12 +1,15 @@
 package me.creighton.encodedid.impl;
 
 
-import static me.creighton.encodedid.EncodedIdException.*;
 import me.creighton.encodedid.EncodedIdException;
 import me.creighton.encodedid.IBigIntegerEncoder;
 import me.creighton.encodedid.IEncodedId;
 
 import java.math.BigInteger;
+
+import static me.creighton.encodedid.EncodedIdException.throwInvalidCharacter;
+import static me.creighton.encodedid.EncodedIdException.throwInvalidCheckCharacter;
+import static me.creighton.encodedid.EncodingConstants.*;
 
 public class BigIntegerEncoder extends EncodedId implements IBigIntegerEncoder {
 

@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
-import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
-import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
+import static me.creighton.encodedid.EncodingConstants.BASE_BIG_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.BIG_ALPHABET;
 import static me.creighton.encodedid.IVerificationEncoder.ABSOLUTE_LARGEST_ID;
 import static me.creighton.encodedid.IVerificationEncoder.ABSOLUTE_LAST_VALID_DATE;
 import static org.junit.jupiter.api.Assertions.*;

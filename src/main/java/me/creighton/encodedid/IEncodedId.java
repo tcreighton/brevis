@@ -2,8 +2,8 @@ package me.creighton.encodedid;
 
 import me.creighton.encodedid.impl.EncodedId;
 
-import static me.creighton.encodedid.IAlphabet.BASE_BIG_CHARACTER_SET;
-import static me.creighton.encodedid.IAlphabet.BIG_ALPHABET;
+import static me.creighton.encodedid.EncodingConstants.BASE_BIG_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.BIG_ALPHABET;
 
 public interface IEncodedId {
 

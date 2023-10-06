@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 import static me.creighton.encodedid.EncodedIdException.throwInvalidId;
 import static me.creighton.encodedid.EncodedIdException.throwInvalidTargetDate;
-import static me.creighton.encodedid.IAlphabet.BASE_DEFAULT_CHARACTER_SET;
-import static me.creighton.encodedid.IAlphabet.DEFAULT_ALPHABET;
+import static me.creighton.encodedid.EncodingConstants.BASE_DEFAULT_CHARACTER_SET;
+import static me.creighton.encodedid.EncodingConstants.DEFAULT_ALPHABET;
 import static me.creighton.encodedid.IEncodedId.getEncodedIdBuilder;
 import static me.creighton.encodedid.Utilities.getRandomLong;
 
