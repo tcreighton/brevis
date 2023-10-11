@@ -110,7 +110,8 @@ public class TestOTPEncoder {
   }
 
   private void showMessage (String msg) {
-    if (SHOW)
+    if (SHOW) {
       System.out.printf("%s\n", msg);
+    }
   }
 }
