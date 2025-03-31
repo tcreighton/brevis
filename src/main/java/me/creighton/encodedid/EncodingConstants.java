@@ -45,12 +45,13 @@ public final class EncodingConstants {
     // This work attempts to comply with RFC 3986.
     //
 
-    public static final String NUMBERS = "0123456789";
-    public static final String LOWER_CASE = "abcdefghijklmnopqrstuvwxyz";
-    public static final String UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String NUMBERS = DIGIT; // "0123456789";
+    public static final String LOWER_CASE = LOWER_ALPHA; // "abcdefghijklmnopqrstuvwxyz";
+    public static final String UPPER_CASE = UPPER_ALPHA; // "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String SPECIAL_CHARACTERS = "!$&'()*.:;=_"; // could cause problems in some URL paths
     public static final String BASE_DEFAULT_CHARACTER_SET = "123456789BCDFGHJKLMNPQRSTVWXYZ";
     public static final String DEFAULT_ALPHABET = "PDGM4ZSCV8QRW3TYNK5FXB216H79LJ";
+    public static final String MEDIUM_CHARACTER_SET = LOWER_CASE + UPPER_CASE + NUMBERS;
     public static final String BASE_BIG_CHARACTER_SET = LOWER_CASE + UPPER_CASE + NUMBERS + SPECIAL_CHARACTERS;
     public static final String BIG_ALPHABET = "TVWboQg4pGnE9w0rhSqFLKmdxZceNk5RBtUDf3iPvMX12OAslIu6yJCa8HYz7j.!;_:&$'()*="; // scrambled LEGAL_URI_ALPHABET
 
